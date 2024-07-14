@@ -1,42 +1,40 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
-  currentPageTitle: string = '';
+export class AppComponent implements OnInit {
+  constructor(private router: Router) {}
+  items: MenuItem[] = [];
 
-  @ViewChild('mainContent') mainContent!: ElementRef;
-
-  constructor(private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log("NavigationEnd event detected");
-        const currentRoute = this.router.url;
-        const routeParts = currentRoute.split('/');
-        const pageTitle = routeParts[routeParts.length - 1];
-        this.currentPageTitle = pageTitle;
-
-        // Realizar el desplazamiento hacia arriba después de la navegación
-        this.scrollToTop();
+  ngOnInit() {
+    this.items = [
+      {
+        label: 'Home',
+        icon: 'pi pi-chart-bar',
+        command: () => this.router.navigate(['/home'])
+      },
+      {
+        label: 'xpTracker',
+        icon: 'pi pi-chart-bar',
+        command: () => this.router.navigate(['/xp-tracker'])
+      },
+      {
+        label: 'Catching calculator',
+        icon: 'pi pi-calculator',
+        command: () => this.router.navigate(['/catching-calculator'])
+      },
+      {
+        label: 'Contact',
+        icon: 'pi pi-envelope',
+        badge: '3'
       }
-    });
+    ];
   }
 
-  ngAfterViewInit() {
-    // Manejar cualquier otro caso de desplazamiento hacia arriba aquí si es necesario
-  }
-
-  scrollToTop() {
-    if (this.mainContent && this.mainContent.nativeElement) {
-      this.mainContent.nativeElement.scroll({ 
-        top: 0, 
-        left: 0, 
-        behavior: 'smooth' 
-      });
-    }
-  }
 }

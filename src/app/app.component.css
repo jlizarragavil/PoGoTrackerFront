@@ -9,7 +9,9 @@ header {
   background-color: rgb(125, 137, 148);
 }
 
-
+::ng-deep .p-menubar {
+  background-color: rgb(153, 127, 224) /* Cambia este valor al color que prefieras */
+}
 .layout-container {
   display: flex;
   height: 90vh; /* Ajusta la altura al 90% de la pantalla */
@@ -85,4 +87,5 @@ header {
   border-radius: 20px;
 
 }
+
 

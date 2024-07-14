@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    align-items: flex-start; /* Alinea elementos al inicio verticalmente */
+    gap: 1rem; /* Espacio entre la tabla y el botón */
+  }
+
+  .calculate-button {
+    height: fit-content; /* Ajusta la altura del botón para alinearlo verticalmente con la tabla */
+  }

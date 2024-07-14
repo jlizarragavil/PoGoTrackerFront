@@ -1,0 +1,29 @@
+.layout-dashboard {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+.layout-dashboard .grid {
+    flex: 1; /* Para que ocupe todo el espacio disponible */
+    display: flex;
+    justify-content: flex-start; /* Alinea el contenido a la izquierda */
+}
+
+.layout-dashboard .col-12 {
+    flex: 1; /* Permite que la columna ocupe todo el espacio disponible */
+}
+
+.layout-dashboard .lg\:col-6 {
+    flex: 0 0 50%; /* Ajusta según sea necesario para el tamaño de la columna en pantallas grandes */
+}
+
+.layout-dashboard .lg\:col-3 {
+    flex: 0 0 25%; /* Ajusta según sea necesario para el tamaño de la columna en pantallas grandes */
+}
+
+.card {
+    width: 100%; /* Asegúrate de que la tarjeta ocupe todo el ancho de la columna */
+}
+span {
+    font-size: 1.7rem; /* Ajusta el tamaño del texto según sea necesario */
+}

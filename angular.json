@@ -30,7 +30,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          ],
+            ],
             "scripts": []
           },
           "configurations": {
