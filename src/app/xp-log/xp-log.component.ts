@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { XpServiceService } from '../service/xp-service.service';
 import { XPRecord, XPTracker } from '../model/XpInterface';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../service/auth.service';
 @Component({
   selector: 'app-xp-log',
   templateUrl: './xp-log.component.html',
@@ -23,34 +24,39 @@ export class XpLogComponent implements OnInit {
   newXpValue: number | null = null;
   xpEvent: any;
   luckyEgg: any;
-
-  constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe) {}
+  username: string | null = '';
+  constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.selectedOverviewWeek=1500000;
-    const id = 'xpTrackerXDChus3';
-    this.xpServiceService.getXpRecordById(id).subscribe(
-      data => {
-        this.xpRecords = data;
-        this.xpRecordsTable = this.xpRecords?.xpRecords || [];
-        if (this.xpRecords && this.xpRecords.xpRecords && this.xpRecords.xpRecords.length > 0) {
-          this.average = this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].avgDailyXp;
-          this.totalXpToFifty = 176000000 - this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP;
-          this.daysNeeded = this.totalXpToFifty / this.average;
+    this.username = this.authService.getUsername();
+    this.selectedOverviewWeek=2500000;
+    this.username = this.authService.getUsername();
+    console.log(this.authService.getUsername())
+    if(this.username){
+      this.xpServiceService.getXpRecordById(this.username).subscribe(
+        data => {
+          this.xpRecords = data;
+          this.xpRecordsTable = this.xpRecords?.xpRecords || [];
+          if (this.xpRecords && this.xpRecords.xpRecords && this.xpRecords.xpRecords.length > 0) {
+            this.average = this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].avgDailyXp;
+            this.totalXpToFifty = 176000000 - this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP;
+            this.daysNeeded = this.totalXpToFifty / this.average;
+          }
+          
+          console.log(this.xpRecords);
+          console.log(this.xpRecordsTable);
+          console.log(this.average)
+          if (this.xpRecords && Array.isArray(this.xpRecords.xpRecords)) {
+            this.updateOverviewChart(this.xpRecords.xpRecords, 7);
+          }
+        },
+        error => {
+          console.error('Error fetching XP record by ID', error);
         }
-        
-        console.log(this.xpRecords);
-        console.log(this.xpRecordsTable);
-        console.log(this.average)
-        if (this.xpRecords && Array.isArray(this.xpRecords.xpRecords)) {
-          this.updateOverviewChart(this.xpRecords.xpRecords, 7);
-        }
-      },
-      error => {
-        console.error('Error fetching XP record by ID', error);
-      }
+  
+      ); 
+    }
 
-    ); 
     for (let id = 100000; id <= 4000000; id += 100000) {
       this.xpGraphic.push(id);
     }
@@ -62,11 +68,11 @@ export class XpLogComponent implements OnInit {
     }
   }
   async addXPRecord() {
-    const id = 'xpTrackerXDChus3';
+    const id = this.username;
     console.log(this.xpEvent)
     console.log(this.luckyEgg)
     console.log()
-    if (this.newXpValue !== null) {
+    if (this.newXpValue !== null && id) {
       try {
         await this.xpServiceService.addXPRecord(id, this.newXpValue, this.xpEvent, this.luckyEgg).toPromise();
     

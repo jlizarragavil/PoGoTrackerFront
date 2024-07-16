@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { XpLogComponent } from './xp-log/xp-log.component';
 import { CatchingCalculatorComponent } from './catching-calculator/catching-calculator.component';
+import { LoginComponent } from './login/login.component';
 
 import { SidebarModule } from 'primeng/sidebar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,11 +28,15 @@ import { ChartModule } from 'primeng/chart';
 import { HttpClientModule } from '@angular/common/http';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [
     AppComponent,
     XpLogComponent,
-    CatchingCalculatorComponent
+    CatchingCalculatorComponent,
+    LoginComponent
   ],
   imports: [
     HttpClientModule,
@@ -56,9 +61,11 @@ import { FormsModule } from '@angular/forms';
     MegaMenuModule,
     MenuModule,
     PanelMenuModule,
-    ScrollTopModule
+    ScrollTopModule,
+    ReactiveFormsModule,
+    ToastModule
   ],
-  providers: [PrimeIcons ],
+  providers: [PrimeIcons,MessageService ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -2,17 +2,20 @@ import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angula
 import { RouterModule, Routes } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-
+import { AuthService } from './service/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
   items: MenuItem[] = [];
-
+  username: string | null = null;
+  isLoggedIn: boolean = false;
+  constructor(private router: Router, public authService: AuthService) {}
   ngOnInit() {
+    console.log(this.authService.getUsername());
+    this.username = this.authService.getUsername();
     this.items = [
       {
         label: 'Home',
@@ -35,6 +38,7 @@ export class AppComponent implements OnInit {
         badge: '3'
       }
     ];
-  }
 
+  }
+  
 }
