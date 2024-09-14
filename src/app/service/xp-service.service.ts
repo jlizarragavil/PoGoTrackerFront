@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 })
 export class XpServiceService {
 
-  private apiUrl = 'http://localhost:8080/xpTracker';
+  private apiUrl = 'https://pogotrackerback.onrender.com/xpTracker';
+  //private apiUrl = 'http://localhost:8080/xpTracker';
 
   constructor(private http: HttpClient) { }
 

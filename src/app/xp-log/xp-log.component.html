@@ -1,5 +1,8 @@
+<div *ngIf="!isLoggedIn" class="container" style="margin-left: 1rem">
+    <p>You need to <a routerLink="/">log in</a> first</p>
+</div>
 <br>
-<div class="layout-dashboard">
+<div class="layout-dashboard " *ngIf="isLoggedIn">
 
     <div class="container-fluid">
         <div class="row">
@@ -103,9 +106,9 @@
                     </div>
                     <div style="margin-top: 3rem;">
                         <button class="btn btn-primary btn-lg" type="button" (click)="addXPRecord()">
-                          <i class="bi bi-plus"></i> Add
+                            <i class="bi bi-plus"></i> Add
                         </button>
-                      </div>
+                    </div>
                 </div>
             </div>
 
@@ -143,43 +146,41 @@
                 <div class="card p-0 widget-overview-box widget-overview-box-2">
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
                         <div class="card" style="width: 55rem;">
-                            <p-table [value]="xpRecordsTable" [tableStyle]="{ 'min-width': '55rem;' }"
-                                styleClass="p-datatable-striped" [paginator]="true" [rows]="5"
+                            <p-table [value]="xpRecordsTable" [tableStyle]="{ 'width': '100%' }"
+                                styleClass="p-datatable-striped responsive-table" [paginator]="true" [rows]="5"
                                 [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="22rem">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Total XP</th>
-                                        <th>Daily XP Difference</th>
+                                        <th class="hide-mobile">Daily XP Difference</th>
                                         <th>Date</th>
-                                        <th>Avg Daily XP</th>
-                                        <th>XP Event</th>
-                                        <th>Lucky Egg</th>
+                                        <th class="hide-mobile">Avg Daily XP</th>
+                                        <th class="hide-mobile">XP Event</th>
+                                        <th class="hide-mobile">Lucky Egg</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record>
                                     <tr>
-                                        <td>{{ record.totalXP }}</td>
-                                        <td>{{ record.dailyXPDifference }}</td>
+                                        <td>{{ record.totalXP | number:'1.0-0' }}</td>
+                                        <td class="hide-mobile">{{ record.dailyXPDifference | number:'1.0-0' }}</td>
                                         <td>{{ record.date | date:'shortDate' }}</td>
-                                        <td>{{ record.avgDailyXp }}</td>
-                                        <td>{{ record.xpEvent }}</td>
-                                        <td>{{ record.luckyEgg }}</td>
+                                        <td class="hide-mobile">{{ record.avgDailyXp | number:'1.2-2' }}</td>
+                                        <td class="hide-mobile">{{ record.xpEvent }}</td>
+                                        <td class="hide-mobile">{{ record.luckyEgg }}</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
+
+
+
                         </div>
                     </div>
                 </div>
-
-
-
 
             </div>
 
         </div>
         <br>
-        <br>
-        <br>
-        <br>
+
     </div>
 </div>

@@ -27,3 +27,37 @@
 span {
     font-size: 1.7rem; /* Ajusta el tamaño del texto según sea necesario */
 }
+.responsive-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+    .responsive-table {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .responsive-table th, .responsive-table td {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .hide-mobile {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .responsive-table th, .responsive-table td {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .responsive-table {
+        font-size: 0.9em;
+    }
+}
+

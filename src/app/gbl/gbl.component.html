@@ -1,0 +1,50 @@
+<div class="table-container">
+    <p-table #dt [value]="pokemon" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name
+                    <input 
+                    pInputText 
+                    type="text" 
+                    (input)="filterTable($event)" 
+                    placeholder="Search by name" 
+                />
+                </th>
+
+                <th>Atk1</th>
+                <th>Atk2</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-pokemon>
+            <tr style="font-size: 1.3rem;">
+                <td>{{ pokemon.name }}</td>
+                <td [ngClass]="getAttackClass(pokemon.type1)">{{ pokemon.atk1 }}</td>
+                <td [ngClass]="getAttackClass(pokemon.type2)">{{ pokemon.atk2 }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div class="legend-container" style="max-width: 20rem; margin-left: 10rem;">
+        <div class="legend">
+            <h3>Legend of Types</h3>
+            <ul class="legend-types">
+                <li *ngFor="let type of pokemonTypes">
+                    <span [ngClass]="getAttackClass(type)" class="legend-color-box"></span> {{ type | titlecase }}
+                </li>
+            </ul>
+            <br>
+            <br>
+            <br>
+            <h3>Legend of Attack Patterns</h3>
+            <ul>
+                <li>
+                    <strong>X-</strong> : Sequence decreases by 1 after the first attack (e.g., 8-, becomes
+                    8,7,7,7,...).
+                </li>
+                <li>
+                    <strong>X*</strong> : Alternating sequence (e.g., 8*, becomes 8,7,8,7,...).
+                </li>
+            </ul>
+        </div>
+    </div>

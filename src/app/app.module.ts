@@ -6,9 +6,10 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { XpLogComponent } from './xp-log/xp-log.component';
+import { GBLComponent } from './gbl/gbl.component';
 import { CatchingCalculatorComponent } from './catching-calculator/catching-calculator.component';
 import { LoginComponent } from './login/login.component';
-
+import { GblGameComponent } from './gbl-game/gbl-game.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { PrimeIcons } from 'primeng/api';
@@ -31,12 +32,17 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
+import { RegisterComponent } from './register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
     XpLogComponent,
     CatchingCalculatorComponent,
-    LoginComponent
+    LoginComponent,
+    GBLComponent,
+    GblGameComponent,
+    RegisterComponent
   ],
   imports: [
     HttpClientModule,
@@ -63,7 +69,8 @@ import { ToastModule } from 'primeng/toast';
     PanelMenuModule,
     ScrollTopModule,
     ReactiveFormsModule,
-    ToastModule
+    ToastModule,
+    InputTextModule
   ],
   providers: [PrimeIcons,MessageService ],
   bootstrap: [AppComponent],

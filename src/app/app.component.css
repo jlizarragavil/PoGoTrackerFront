@@ -74,7 +74,7 @@ header {
 :host ::ng-deep .p-menuitem-text,
 :host ::ng-deep .p-menuitem-icon,
 :host ::ng-deep .p-panelmenu .p-component.p-panelmenu-header>a {
-  color: white !important;
+  color: black !important;
 }
 :host ::ng-deep .p-panel .p-panel-header  
 .p-panel-header-icon { 
@@ -87,5 +87,10 @@ header {
   border-radius: 20px;
 
 }
+.p-menubar-end {
+  margin-left: auto; /* Empuja el template "end" hacia la derecha */
+}
 
-
+.p-menuitem-link {
+  cursor: pointer;
+}
