@@ -34,6 +34,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { RegisterComponent } from './register/register.component';
+import { BattleLogComponent } from './battle-log/battle-log.component';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +44,9 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     GBLComponent,
     GblGameComponent,
-    RegisterComponent
+    RegisterComponent,
+    BattleLogComponent,
+    HomeComponent
   ],
   imports: [
     HttpClientModule,

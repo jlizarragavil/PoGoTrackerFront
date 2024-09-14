@@ -1,0 +1,48 @@
+<div class="table-container">
+    <div class="form-container">
+        <p-table #dt [value]="battleLogs" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name
+                        <input pInputText type="text" (input)="filterTable($event)" placeholder="Search by name" />
+                    </th>
+    
+                    <th>Atk1</th>
+                    <th>Atk2</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-battleLog>
+                <tr style="font-size: 1.3rem;">
+                    <td>{{ battleLog.defeats }}</td>
+                    <td>{{ battleLog.elo }}</td>
+                    <td>{{ battleLog.setNumber }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="table-container">
+        <p-table #dt [value]="battleLogs" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name
+                        <input pInputText type="text" (input)="filterTable($event)" placeholder="Search by name" />
+                    </th>
+    
+                    <th>Atk1</th>
+                    <th>Atk2</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-battleLog>
+                <tr style="font-size: 1.3rem;">
+                    <td>{{ battleLog.defeats }}</td>
+                    <td>{{ battleLog.elo }}</td>
+                    <td>{{ battleLog.setNumber }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    
+
+</div>

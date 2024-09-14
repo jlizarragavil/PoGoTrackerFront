@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
       {
         label: 'Home',
         icon: 'pi pi-home',
-        command: () => this.router.navigate(['/home'])
+        command: () => this.router.navigate(['/'])
       },
       {
         label: 'xpTracker',
@@ -49,6 +49,11 @@ export class AppComponent implements OnInit {
         label: 'GBL Game',
         icon: 'pi pi-table',
         command: () => this.router.navigate(['/gbl-game'])
+      },
+      {
+        label: 'Battle log',
+        icon: 'pi pi-table',
+        command: () => this.router.navigate(['/battle-log'])
       },
       {
         label: 'Contact',

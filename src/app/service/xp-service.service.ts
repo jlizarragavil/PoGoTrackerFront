@@ -37,4 +37,13 @@ export class XpServiceService {
     });
     return this.http.patch(url, xpRecordBody);
   }
+   // Obtener el XPTracker por ID
+   getXPTrackerById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  // Agregar un nuevo BattleLog
+  addBattleLog(id: string, battleLog: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/battle-log`, battleLog);
+  }
 }
