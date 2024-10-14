@@ -1,25 +1,62 @@
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
 
-.table-container {
-    display: flex;
-    justify-content: right;
-    align-items: flex-start;
-    gap: 2rem;
-    padding-top: 2rem;
-    padding-right: 5rem;
-    
-  }
-  .form-container {
-    display: flex;
-    justify-content: left;
-    align-items: flex-start;
-    gap: 2rem;
-    padding-top: 2rem;
-    padding-left: 2rem;
-  }
-  strong {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-  }
- 
-  
- 
+h2 {
+  margin-bottom: 20px;
+}
+
+.p-card {
+  margin-bottom: 20px;
+}
+
+.p-table {
+  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #e0adad;
+}
+
+.p-button {
+  margin-top: 10px;
+}
+
+.p-field {
+  margin-bottom: 15px;
+}
+
+.selected-victory {
+  background-color: #b3dfb5;
+}
+
+.highlight-first-row {
+  background-color: rgb(74, 228, 35) !important;
+  transition: background-color 1s ease; 
+}
+
+tr {
+  background-color: transparent;
+  transition: background-color 1s ease;
+}
+
+.table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.table thead {
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd !important;
+  padding: 8px !important;
+  text-align: left !important;
+}
+
+strong {
+  color: #ad1ce6 !important;
+}

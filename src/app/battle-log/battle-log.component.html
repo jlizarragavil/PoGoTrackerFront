@@ -1,48 +1,150 @@
-<div class="table-container">
-    <div class="form-container">
-        <p-table #dt [value]="battleLogs" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
-            [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Name
-                        <input pInputText type="text" (input)="filterTable($event)" placeholder="Search by name" />
-                    </th>
-    
-                    <th>Atk1</th>
-                    <th>Atk2</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-battleLog>
-                <tr style="font-size: 1.3rem;">
-                    <td>{{ battleLog.defeats }}</td>
-                    <td>{{ battleLog.elo }}</td>
-                    <td>{{ battleLog.setNumber }}</td>
-                </tr>
-            </ng-template>
-        </p-table>
+<div *ngIf="!isLoggedIn" class="container" style="margin-left: 1rem;">
+    <p>You need to <a routerLink="/login" style="color: #f2b807;">log in</a> first</p>
+</div>
+<br>
+<div class="layout-dashboard" *ngIf="isLoggedIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" style="width: 40rem; border: 2px solid #f2b807; border-radius: 10px;">
+                    <div class="card-header" style="background-color: #3b4cca; color: white;">
+                        <h5>Add New Battle Log</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="league">League: </label>
+                            <p-dropdown [options]="leagues" [(ngModel)]="selectedLeague" optionLabel="label"
+                                placeholder="Select a league" (onChange)="onLeagueChange($event)"
+                                style="margin-left: 1rem;">
+                            </p-dropdown>
+                        </div>
+                        <div class="form-group">
+                            <label for="subLeague">Sub League</label>
+                            <input type="text" id="subLeague" [(ngModel)]="newBattleLog.subLeague" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="victories">Victories</label>
+                            <div class="victories-selection" style="display: flex; gap: 1rem;">
+                                <ng-container *ngFor="let value of [0, 1, 2, 3, 4, 5]">
+                                    <div class="victory-option"
+                                        [ngClass]="{'selected-victory': newBattleLog.victories === value}"
+                                        (click)="newBattleLog.victories = value"
+                                        style="cursor: pointer; text-align: center; padding: 10px; border: 2px solid #c09191; border-radius: 10px; width: 60px;">
+                                        <input type="radio" name="victories" [(ngModel)]="newBattleLog.victories"
+                                            [value]="value" id="victory-{{value}}" style="display: none;">
+                                        <label for="victory-{{value}}" class="victory-radio"
+                                            [style.color]="newBattleLog.victories === value ? '#c09191' : 'black'"
+                                            style="cursor: pointer;">
+                                            {{ value }}
+                                        </label>
+                                        <div>
+                                            <img src="assets/victory.jfif" style="width: 30px; margin-top: 0.5rem;">
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="elo">ELO</label>
+                            <input type="number" id="elo" [(ngModel)]="newBattleLog.elo" class="form-control">
+                        </div>
+                        <button class="btn btn-primary" (click)="addBattleLog()"
+                            style="background-color: #f2b807; border-color: #f2b807;">Add Battle Log</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" style="border: 2px solid #f2b807; border-radius: 10px;">
+                    <div class="card-header" style="background-color: #3b4cca; color: white;">
+                        <h5>Battle Logs</h5>
+                    </div>
+                    <div class="card-body">
+                        <p-table [value]="battleLogs" [paginator]="true" [rows]="5" styleClass="p-datatable-striped">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>League</th>
+                                    <th>Sub League</th>
+                                    <th>Victories</th>
+                                    <th>Defeats</th>
+                                    <th>ELO</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-log let-i="rowIndex">
+                                <tr [id]="'log-row-' + i">
+                                    <td>{{ log.league }}</td>
+                                    <td>{{ log.subLeague }}</td>
+                                    <td>{{ log.victories }}</td>
+                                    <td>{{ 5 - log.victories }}</td>
+                                    <td>{{ log.elo }}</td>
+                                    <td>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+                <button style="margin-top: 2rem; background-color: #3b4cca;" class="btn btn-secondary"
+                    (click)="showStats()">Show Stats</button>
+            </div>
+        </div>
     </div>
-    <div class="table-container">
-        <p-table #dt [value]="battleLogs" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
-            [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Name
-                        <input pInputText type="text" (input)="filterTable($event)" placeholder="Search by name" />
-                    </th>
-    
-                    <th>Atk1</th>
-                    <th>Atk2</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-battleLog>
-                <tr style="font-size: 1.3rem;">
-                    <td>{{ battleLog.defeats }}</td>
-                    <td>{{ battleLog.elo }}</td>
-                    <td>{{ battleLog.setNumber }}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    
+</div>
 
+<div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statsModalLabel">Battle Statistics</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Metric</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Victories</td>
+                            <td id="totalVictories"></td>
+                        </tr>
+                        <tr>
+                            <td>Total Defeats</td>
+                            <td id="totalDefeats"></td>
+                        </tr>
+                        <tr>
+                            <td>Total Sets</td>
+                            <td id="totalSets"></td>
+                        </tr>
+                        <tr>
+                            <td>Win Rate</td>
+                            <td id="winRate"></td>
+                        </tr>
+                        <tr>
+                            <td>Average Elo</td>
+                            <td id="averageElo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Max Elo</strong></td>
+                            <td><strong id="maximumElo">{{ maximumElo }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: center;">
+                        <a style="color: rgb(3, 36, 105); font-size: large;"><b>Elo Graphic</b></a>
+                </div>
+                <div class="graph mb-3" style="height: 300px;">
+                    <p-chart type="line" [data]="overviewChart" [options]="overviewChartOptions"
+                        style="height: 100%; width: 100%;"></p-chart>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <br><br><br><br>
+            </div>
+        </div>
+    </div>
 </div>

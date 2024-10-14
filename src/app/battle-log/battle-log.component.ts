@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { XpServiceService } from '../service/xp-service.service'; // Ajusta la ruta según tu estructura
-import { AuthService } from '../service/auth.service'; // Ajusta la ruta según tu estructura
+import { BattleLogService } from '../service/battle-log.service';
+import { BattleLog } from '../model/BattleLog';
+import { AuthService } from '../service/auth.service';
+import * as bootstrap from 'bootstrap';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-battle-log',
@@ -9,70 +11,193 @@ import { AuthService } from '../service/auth.service'; // Ajusta la ruta según 
   styleUrls: ['./battle-log.component.css']
 })
 export class BattleLogComponent implements OnInit {
-  battleLogForm: FormGroup;
-  battleLogs: any[] = []; // Define adecuadamente según la estructura de BattleLog
-  username: string | null = null;
-  xpTrackerId: string | null = null;
-  filterValue: string = '';
+  isLoggedIn: boolean = true;
+  selectedLeague: any = null;
+  maximumElo: any = null
+  username: string = '';
+  leagueSelected: string = '';
+  overviewChart: any;
+  overviewChartOptions: any;
+  newBattleLog: BattleLog = {
+    league: '',
+    subLeague: '',
+    victories: 0,
+    defeats: 0,
+    elo: 0,
+    battlesInSet: 0,
+    setNumber: 0,
+    date: new Date().toISOString()
+  };
+  battleLogs: BattleLog[] = [];
+  leagues: any[] = [];
+
   constructor(
-    private fb: FormBuilder,
-    private xpTrackerService: XpServiceService,
-    private authService: AuthService
-  ) {
-    this.battleLogForm = this.fb.group({
-      league: ['', Validators.required],
-      victories: [0, Validators.required],
-      defeats: [0, Validators.required],
-      elo: [0, Validators.required],
-      battlesInSet: [0, Validators.required],
-      setNumber: [0, Validators.required]
+    private battleLogService: BattleLogService,
+    private authService: AuthService,
+    private http: HttpClient
+  ) { }
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.authService.isUserLoggedIn();
+    this.username = this.authService.getUsername() || '';
+    this.getBattleLogs(this.username);
+    this.leagues = [
+      { label: 'Super', value: 'Super' },
+      { label: 'Ultra', value: 'Ultra' },
+      { label: 'Master', value: 'Master' }
+    ];
+  }
+
+  getBattleLogs(id: string): void {
+    this.battleLogService.getBattleLogs(id).subscribe(logs => {
+      this.battleLogs = logs.reverse();
+      const eloHistory = this.extractEloHistory(logs);
+      console.log(eloHistory);
+      this.initializeChart(eloHistory);
+
+    });
+
+  }
+
+  extractEloHistory(logs: BattleLog[]): any[] {
+    return logs.map((log, index) => ({
+      setNumber: index + 1,
+      elo: log.elo
+    }));
+  }
+
+  initializeChart(eloHistory: any[]) {
+    const labels = eloHistory.map(log => log.setNumber);
+    const data = eloHistory.map(log => log.elo);
+    this.overviewChart = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Elo History',
+          backgroundColor: '#42A5F5',
+          data: data,
+          borderColor: '#1E88E5',
+          borderWidth: 2,
+          fill: true,
+        }
+      ]
+    };
+
+    this.overviewChartOptions = this.getChartOptions(Math.max(...data.reverse()), Math.min(...data));
+  }
+
+  highlightFirstRow(): void {
+
+    const firstRow = document.getElementById('log-row-0');
+    if (firstRow) {
+      console.log('Resaltando la fila:', firstRow);
+      firstRow.classList.add('highlight-first-row');
+
+      setTimeout(() => {
+        firstRow.classList.remove('highlight-first-row');
+        console.log('Clase eliminada:', firstRow);
+      }, 1000);
+    } else {
+      console.log('No se encontró la fila');
+    }
+
+  }
+  getChartOptions(maxElo: number, minElo: number) {
+    this.maximumElo = maxElo;
+    console.log(this.maximumElo)
+    return {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      responsive: true,
+      hover: {
+        mode: 'index'
+      },
+      scales: {
+        y: {
+          max: Math.ceil(maxElo + 100),
+          type: 'linear',
+          min: Math.ceil(minElo - 100),
+          ticks: {
+            stepSize: 200,
+            callback: (value: number) => {
+              return Math.round(value);
+            }
+          },
+          grid: {
+            borderDash: [2, 2],
+            drawBorder: false,
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            beginAtZero: true,
+          }
+        }
+      }
+    };
+  }
+
+  addBattleLog(): void {
+    this.newBattleLog.date = new Date().toISOString();
+    this.newBattleLog.league = this.leagueSelected;
+    console.log('League selected (before submit):', this.newBattleLog.league);
+    console.log('Payload:', this.newBattleLog);
+    this.newBattleLog.defeats = 5 - this.newBattleLog.victories;
+    this.battleLogService.addBattleLog(this.username, this.newBattleLog).subscribe(log => {
+      this.battleLogs.unshift(log);
+      this.newBattleLog = {
+        league: '',
+        subLeague: '',
+        victories: 0,
+        defeats: 0,
+        elo: 0,
+        battlesInSet: 0,
+        setNumber: 0,
+        date: new Date().toISOString()
+      };
+      this.getBattleLogs(this.username);
+      setTimeout(() => {
+        this.highlightFirstRow();
+      }, 1000);
+
     });
   }
 
-  ngOnInit(): void {
-    this.username = this.authService.getUsername();
-    if (this.username) {
-      this.xpTrackerId = this.username; // Usar el nombre de usuario como ID de XPTracker
-      this.loadBattleLogs();
-    } else {
-      console.error('No user is logged in.');
-    }
+  onLeagueChange(event: any): void {
+    this.leagueSelected = event.value.value;
+    console.log('League selected:', this.newBattleLog.league);
   }
 
-  loadBattleLogs(): void {
-    if (this.xpTrackerId) {
-      this.xpTrackerService.getXPTrackerById(this.xpTrackerId)
-        .subscribe(response => {
-          if (response && response.battleLog) {
-            this.battleLogs = response.battleLog;
-          }
-        });
-    }
-  }
+  showStats(): void {
+    const league = this.newBattleLog.league;
+    const subLeague = this.newBattleLog.subLeague;
 
-  onSubmit(): void {
-    if (this.battleLogForm.valid && this.xpTrackerId) {
-      const newBattleLog = this.battleLogForm.value;
+    this.battleLogService.getBattleStats(this.username, league, subLeague).subscribe(stats => {
+      const totalVictoriesCell = document.getElementById('totalVictories');
+      const totalDefeatsCell = document.getElementById('totalDefeats');
+      const totalSetsCell = document.getElementById('totalSets');
+      const winRateCell = document.getElementById('winRate');
+      const averageEloCell = document.getElementById('averageElo');
 
-      this.xpTrackerService.addBattleLog(this.xpTrackerId, newBattleLog)
-        .subscribe(
-          response => {
-            if (response && response.battleLog) {
-              this.battleLogs.push(response.battleLog.pop()); // Update the display with the latest battle log
-              this.battleLogForm.reset();
-            }
-          },
-          error => {
-            console.error('Error adding BattleLog:', error);
-          }
-        );
-    }
-  }
-  filterTable(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.filterValue = input.value.toLowerCase();
-    this.battleLogs = this.battleLogs.filter(log =>
-      log.league.toLowerCase().includes(this.filterValue)
-    );
+      if (totalVictoriesCell) totalVictoriesCell.innerText = stats.totalVictories;
+      if (totalDefeatsCell) totalDefeatsCell.innerText = stats.totalDefeats;
+      if (totalSetsCell) totalSetsCell.innerText = stats.totalSets;
+      if (winRateCell) winRateCell.innerText = `${stats.winRate.toFixed(2)}%`;
+      if (averageEloCell) averageEloCell.innerText = stats.averageElo;
+
+      const modalElement = document.getElementById('statsModal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    }, error => {
+      console.error('Error fetching stats:', error);
+    });
   }
 }

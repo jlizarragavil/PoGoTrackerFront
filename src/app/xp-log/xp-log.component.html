@@ -1,12 +1,12 @@
 <div *ngIf="!isLoggedIn" class="container" style="margin-left: 1rem">
-    <p>You need to <a routerLink="/">log in</a> first</p>
+    <p>You need to <a routerLink="/login">log in</a> first</p>
 </div>
 <br>
 <div class="layout-dashboard " *ngIf="isLoggedIn">
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6" style="min-height: 100vh;">
                 <div class="card widget-overview-chart h-full">
                     <div class="card-header">
                         <span class="font-bold">Set the limit for XP </span>
@@ -24,11 +24,14 @@
                         <div class="input-group" style="margin-right: 60%;">
                             <a>Set the amout of days to see on the table: </a>
                             <input type="number" [(ngModel)]="tableLengthInput" placeholder="Enter table length"
-                                style="margin-left: 5%;">
+                                style="margin-left: 2%;">
                             <button class="btn btn-primary" type="button"
                                 (click)="changeTableLength(tableLengthInput)">Set</button>
+                            <a style="margin-left: 2%;">Total XP won:
+                                <strong>{{totalXP.toLocaleString('en-EN')}}</strong></a>
                         </div>
                     </div>
+
                     <br>
                 </div>
                 <div class="row mt-4">
@@ -61,6 +64,9 @@
                                                 [(ngModel)]="xpEvent" id="radioX2" value="2">
                                             <label class="form-check-label" for="radioX2">x2</label>
                                         </div>
+
+                                    </div>
+                                    <div style="margin-top: 0.5rem; margin-left: 2rem;">
 
                                         <div class="form-check mb-2">
                                             <input class="form-check-input" type="radio" name="xpEvent"
@@ -117,7 +123,7 @@
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
                         <div class="pl-3 overflow-hidden">
                             <span class="header block white-space-nowrap overflow-hidden">Average XP per day: </span>
-                            <span class="block text-2xl font-bold text-primary">{{ average }}</span>
+                            <span class="block text-2xl font-bold text-primary">{{ average.toLocaleString('en-EN')}}</span>
                         </div>
                     </div>
                 </div>
@@ -127,7 +133,8 @@
                         <div class="pl-3 overflow-hidden">
                             <span class="header block white-space-nowrap overflow-hidden">XP needed to hit lvl 50:
                             </span>
-                            <span class="block text-2xl font-bold text-primary">{{ totalXpToFifty }}</span>
+                            <span class="block text-2xl font-bold text-primary">{{
+                                totalXpToFifty.toLocaleString('en-EN') }}</span>
                         </div>
                     </div>
                 </div>
@@ -146,9 +153,9 @@
                 <div class="card p-0 widget-overview-box widget-overview-box-2">
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
                         <div class="card" style="width: 55rem;">
-                            <p-table [value]="xpRecordsTable" [tableStyle]="{ 'width': '100%' }"
-                                styleClass="p-datatable-striped responsive-table" [paginator]="true" [rows]="5"
-                                [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true" scrollHeight="22rem">
+                            <p-table [value]="xpRecordsTable" styleClass="p-datatable-striped responsive-table"
+                                [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true"
+                                scrollHeight="22rem">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Total XP</th>
@@ -157,6 +164,7 @@
                                         <th class="hide-mobile">Avg Daily XP</th>
                                         <th class="hide-mobile">XP Event</th>
                                         <th class="hide-mobile">Lucky Egg</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record>
@@ -167,20 +175,18 @@
                                         <td class="hide-mobile">{{ record.avgDailyXp | number:'1.2-2' }}</td>
                                         <td class="hide-mobile">{{ record.xpEvent }}</td>
                                         <td class="hide-mobile">{{ record.luckyEgg }}</td>
+                                        <td>
+                                            <button (click)="deleteRecord(record)"
+                                                class="p-button p-component p-button-danger">Delete</button>
+                                        </td>
                                     </tr>
                                 </ng-template>
                             </p-table>
-
-
-
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <br>
-
     </div>
 </div>

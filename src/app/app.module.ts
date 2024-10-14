@@ -36,6 +36,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RegisterComponent } from './register/register.component';
 import { BattleLogComponent } from './battle-log/battle-log.component';
 import { HomeComponent } from './home/home.component';
+import { TreeTableModule } from 'primeng/treetable';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,8 @@ import { HomeComponent } from './home/home.component';
     ScrollTopModule,
     ReactiveFormsModule,
     ToastModule,
-    InputTextModule
+    InputTextModule,
+    TreeTableModule
   ],
   providers: [PrimeIcons,MessageService ],
   bootstrap: [AppComponent],

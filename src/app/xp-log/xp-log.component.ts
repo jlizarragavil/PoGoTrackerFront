@@ -27,6 +27,7 @@ export class XpLogComponent implements OnInit {
   luckyEgg: any;
   username: string | null = '';
   isLoggedIn: boolean = false;
+  totalXP: number = 0;
 
   constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe, private authService: AuthService) {}
 
@@ -89,12 +90,12 @@ export class XpLogComponent implements OnInit {
     const data = dailyXP.map(record => record.dailyXPDifference).slice(-tableLength);
     const maxXP = Math.max(...data);
     const roundedMaxXP = this.roundUpToNearest500000(maxXP);
-
+    this.totalXP = data.reduce((sum, value) => sum + value, 0);
     this.overviewChart = {
       labels: labels,
       datasets: [
         {
-          label: 'Avg Daily XP',
+          label: 'XP won',
           data: data,
           borderColor: 'red',
           pointBorderColor: 'purple',
@@ -111,6 +112,11 @@ export class XpLogComponent implements OnInit {
       this.overviewChartOptions.refresh();
     }
   }
+
+  deleteRecord(index: number) {
+    console.log("delete")
+    alert("Working on this :)");
+}
 
   calculateDailyXP(xpRecords: XPRecord[]): XPRecord[] {
     const dailyXP: { [date: string]: XPRecord } = {};
