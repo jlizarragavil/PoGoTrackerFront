@@ -17,7 +17,7 @@ export class GblGameComponent {
     { name: 'Carbink', atk1: 'Power Gem (12)', type1: 'rock', atk2: 'Moonblast (12)', type2: 'fairy' },
     { name: 'Marowak', atk1: 'Bone Club (4*)', type1: 'ground', atk2: 'Rock Slide (5*)', type2: 'rock' },
     { name: 'Marowak Alolan', atk1: 'Bone Club (4*)', type1: 'ground', atk2: 'Shadow Bone (5*)', type2: 'ghost' },
-    { name: 'Quagsire', atk1: 'Aqua Tail (5*)', type1: 'water', atk2: 'Stone Edge (7*)', type2: 'rock' },
+    { name: 'Quagsire', atk1: 'Aqua Tail (5*)', type1: 'water', atk2: 'Stone Edge (7)', type2: 'rock' },
     { name: 'Serperior', atk1: 'Aereal Ace (5)', type1: 'flying', atk2: 'Frenzy Plant (6)', type2: 'grass' },
     { name: 'Toxapex', atk1: 'Brine (8-)', type1: 'water', atk2: 'Sludge wave (10-)', type2: 'poison' },
     { name: 'Altaria', atk1: 'Sky Attack (19-)', type1: 'flying', atk2: 'Moonblast (20)', type2: 'fairy' },
@@ -32,6 +32,8 @@ export class GblGameComponent {
     { name: 'Talonflame', atk1: 'Fly (3-)', type1: 'flying', atk2: 'Flame Charge (3*)', type2: 'fire' },
     { name: 'Lickilicky', atk1: 'Bodyslam (3)', type1: 'normal', atk2: 'Sadow Ball (5-)', type2: 'ghost' },
     { name: 'Bastiodon', atk1: 'Stone Edge (7)', type1: 'rock', atk2: 'Flamethrower (7)', type2: 'fire' },
+    { name: 'Drapion', atk1: 'Aqua tail (4)', type1: 'water', atk2: 'Crunch (5)', type2: 'dark' },
+    { name: 'Greninja', atk1: 'Hydro cannon (3)', type1: 'water', atk2: 'Night Slash (3*)', type2: 'dark' },
   ];
 
   selectedPokemon: any;

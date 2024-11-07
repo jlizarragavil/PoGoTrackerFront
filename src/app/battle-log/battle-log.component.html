@@ -1,12 +1,14 @@
 <div *ngIf="!isLoggedIn" class="container" style="margin-left: 1rem;">
     <p>You need to <a routerLink="/login" style="color: #f2b807;">log in</a> first</p>
 </div>
+
 <br>
+<p-toast></p-toast>
 <div class="layout-dashboard" *ngIf="isLoggedIn">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6">
-                <div class="card" style="width: 40rem; border: 2px solid #f2b807; border-radius: 10px;">
+            <div class="col-12 col-md-6">
+                <div class="card" style="border: 2px solid #f2b807; border-radius: 10px;">
                     <div class="card-header" style="background-color: #3b4cca; color: white;">
                         <h5>Add New Battle Log</h5>
                     </div>
@@ -20,7 +22,7 @@
                         </div>
                         <div class="form-group">
                             <label for="subLeague">Sub League</label>
-                            <input type="text" id="subLeague" [(ngModel)]="newBattleLog.subLeague" class="form-control">
+                            <input type="text" id="subLeague" [(ngModel)]="newBattleLog.subLeague" class="form-control form-control-sm">
                         </div>
                         <div class="form-group">
                             <label for="victories">Victories</label>
@@ -46,14 +48,15 @@
                         </div>
                         <div class="form-group">
                             <label for="elo">ELO</label>
-                            <input type="number" id="elo" [(ngModel)]="newBattleLog.elo" class="form-control">
+                            <input type="number" id="elo" [(ngModel)]="newBattleLog.elo" class="form-control form-control-sm">
                         </div>
-                        <button class="btn btn-primary" (click)="addBattleLog()"
-                            style="background-color: #f2b807; border-color: #f2b807;">Add Battle Log</button>
+                        <button class="btn btn-primary w-100" (click)="addBattleLog()"
+                            style="background-color: #c366cf; border-color: #f2b807;">Add Battle Log</button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+
+            <div class="col-12 col-md-6 mt-4 mt-md-0">
                 <div class="card" style="border: 2px solid #f2b807; border-radius: 10px;">
                     <div class="card-header" style="background-color: #3b4cca; color: white;">
                         <h5>Battle Logs</h5>
@@ -78,20 +81,21 @@
                                     <td>{{ 5 - log.victories }}</td>
                                     <td>{{ log.elo }}</td>
                                     <td>
-                                        <button class="btn btn-danger">Delete</button>
+                                        <button class="btn btn-danger btn-sm">Delete</button>
                                     </td>
                                 </tr>
                             </ng-template>
                         </p-table>
                     </div>
                 </div>
-                <button style="margin-top: 2rem; background-color: #3b4cca;" class="btn btn-secondary"
+                <button style="margin-top: 2rem; background-color: #3b4cca;" class="btn btn-secondary w-100"
                     (click)="showStats()">Show Stats</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal for stats -->
 <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

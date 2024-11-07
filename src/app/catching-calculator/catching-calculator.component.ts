@@ -13,7 +13,7 @@ interface XPItem {
 @Component({
   selector: 'app-catching-calculator',
   templateUrl: './catching-calculator.component.html',
-  styleUrl: './catching-calculator.component.css'
+  styleUrl: './catching-calculator.component.scss'
 })
 
 export class CatchingCalculatorComponent implements OnInit {

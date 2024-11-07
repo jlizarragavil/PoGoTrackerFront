@@ -4,11 +4,12 @@ import { BattleLog } from '../model/BattleLog';
 import { AuthService } from '../service/auth.service';
 import * as bootstrap from 'bootstrap';
 import { HttpClient } from '@angular/common/http';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-battle-log',
   templateUrl: './battle-log.component.html',
-  styleUrls: ['./battle-log.component.css']
+  styleUrls: ['./battle-log.component.scss'],
+  providers: [MessageService]
 })
 export class BattleLogComponent implements OnInit {
   isLoggedIn: boolean = true;
@@ -34,7 +35,8 @@ export class BattleLogComponent implements OnInit {
   constructor(
     private battleLogService: BattleLogService,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -144,6 +146,12 @@ export class BattleLogComponent implements OnInit {
   }
 
   addBattleLog(): void {
+    console.log(this.leagueSelected)
+    console.log(this.newBattleLog.elo)
+    if (!this.leagueSelected || this.newBattleLog.elo === 0) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Please fill in the League and Elo fields.'});
+      return;
+    }
     this.newBattleLog.date = new Date().toISOString();
     this.newBattleLog.league = this.leagueSelected;
     console.log('League selected (before submit):', this.newBattleLog.league);
@@ -165,8 +173,31 @@ export class BattleLogComponent implements OnInit {
       setTimeout(() => {
         this.highlightFirstRow();
       }, 1000);
-
-    });
+      let toastMessage: string;
+    switch (this.newBattleLog.victories) {
+      case 0:
+        toastMessage = "No worries, we'll blame the lag!";
+        break;
+      case 1:
+        toastMessage = "Hang in there, next one’s yours!";
+        break;
+      case 2:
+        toastMessage = "Not bad, you're warming up!";
+        break;
+      case 3:
+        toastMessage = "Great effort, you'll crush it next time!";
+        break;
+      case 4:
+        toastMessage = "Almost there, one more and you're golden!";
+        break;
+      case 5:
+        toastMessage = "You rock! Champion status unlocked!";
+        break;
+      default:
+        toastMessage = "Keep going! Victory is near!";
+    }
+    this.messageService.add({severity: 'success', summary: 'Battle Log Added', detail: toastMessage});
+  });
   }
 
   onLeagueChange(event: any): void {

@@ -31,23 +31,24 @@
                                 <strong>{{totalXP.toLocaleString('en-EN')}}</strong></a>
                         </div>
                     </div>
-
                     <br>
                 </div>
                 <div class="row mt-4">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4"style="margin-top: 2%;">
                         <div class="card widget-overview-chart h-full">
                             <div class="card-body">
                                 <p class="mb-1" style="color: black;">Add your total XP</p>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="XP" [(ngModel)]="newXpValue">
-
+                                    <button class="btn btn-primary btn-lg" type="button" (click)="addXPRecord()" style="margin-left: 5%; font-size: 14px;">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                    </div>
-                    <div class="col-lg-3">
+                    </div><br>
+                    <div class="col-lg-3" style="margin-top: 2%;">
                         <div class="card widget-overview-chart h-full">
                             <div class="card-body">
                                 <p class="mb-1" style="color: black;">Xp event?</p>
@@ -84,8 +85,8 @@
 
                         </div>
 
-                    </div>
-                    <div class="col-lg-3">
+                    </div><br>
+                    <div class="col-lg-3" style="margin-top: 2%;">
                         <div class="card widget-overview-chart h-full">
                             <div class="card-body">
                                 <p class="mb-1" style="color: black;">Lucky egg used?</p>
@@ -104,22 +105,20 @@
                                         </div>
 
                                     </div>
+                                    
                                 </div>
+                                
                             </div>
 
                         </div>
+                        
+                    </div>
 
-                    </div>
-                    <div style="margin-top: 3rem;">
-                        <button class="btn btn-primary btn-lg" type="button" (click)="addXPRecord()">
-                            <i class="bi bi-plus"></i> Add
-                        </button>
-                    </div>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <div class="card p-0 widget-overview-box widget-overview-box-2">
+                <div class="card p-0 widget-overview-box widget-overview-box-2" style="margin-top: 2%;">
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
                         <div class="pl-3 overflow-hidden">
                             <span class="header block white-space-nowrap overflow-hidden">Average XP per day: </span>
@@ -148,14 +147,12 @@
                         </div>
                     </div>
                 </div>
-
                 <br>
                 <div class="card p-0 widget-overview-box widget-overview-box-2">
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
-                        <div class="card" style="width: 55rem;">
+                        <div class="card" style="width: 100%; overflow-x: auto;">
                             <p-table [value]="xpRecordsTable" styleClass="p-datatable-striped responsive-table"
-                                [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" [scrollable]="true"
-                                scrollHeight="22rem">
+                                     [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Total XP</th>
@@ -169,15 +166,33 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record>
                                     <tr>
-                                        <td>{{ record.totalXP | number:'1.0-0' }}</td>
-                                        <td class="hide-mobile">{{ record.dailyXPDifference | number:'1.0-0' }}</td>
-                                        <td>{{ record.date | date:'shortDate' }}</td>
-                                        <td class="hide-mobile">{{ record.avgDailyXp | number:'1.2-2' }}</td>
-                                        <td class="hide-mobile">{{ record.xpEvent }}</td>
-                                        <td class="hide-mobile">{{ record.luckyEgg }}</td>
+                                        <td>
+                                            <span class="column-name">Total XP:</span>
+                                            {{ record.totalXP | number:'1.0-0' }}
+                                        </td>
+                                        <td class="hide-mobile">
+                                            <span class="column-name">Daily XP Difference:</span>
+                                            {{ record.dailyXPDifference | number:'1.0-0' }}
+                                        </td>
+                                        <td>
+                                            <span class="column-name">Date:</span>
+                                            {{ record.date | date:'shortDate' }}
+                                        </td>
+                                        <td class="hide-mobile">
+                                            <span class="column-name">Avg Daily XP:</span>
+                                            {{ record.avgDailyXp | number:'1.2-2' }}
+                                        </td>
+                                        <td class="hide-mobile">
+                                            <span class="column-name">XP Event:</span>
+                                            {{ record.xpEvent }}
+                                        </td>
+                                        <td class="hide-mobile">
+                                            <span class="column-name">Lucky Egg:</span>
+                                            {{ record.luckyEgg }}
+                                        </td>
                                         <td>
                                             <button (click)="deleteRecord(record)"
-                                                class="p-button p-component p-button-danger">Delete</button>
+                                                    class="p-button p-component p-button-danger">Delete</button>
                                         </td>
                                     </tr>
                                 </ng-template>

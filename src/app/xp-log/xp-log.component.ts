@@ -7,7 +7,7 @@ import { AuthService } from '../service/auth.service';
 @Component({
   selector: 'app-xp-log',
   templateUrl: './xp-log.component.html',
-  styleUrl: './xp-log.component.css',
+  styleUrl: './xp-log.component.scss',
   providers: [DatePipe]
 })
 export class XpLogComponent implements OnInit {

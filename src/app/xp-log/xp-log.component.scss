@@ -1,0 +1,36 @@
+/* Estilos para los nombres de las columnas */
+.column-name {
+    font-weight: bold;
+    color: #333;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+/* Hacer que los nombres de las columnas solo se muestren en móviles */
+@media screen and (max-width: 768px) {
+    .p-datatable td {
+        display: block; /* Hace que cada celda se muestre en bloque en móviles */
+        margin-bottom: 10px;
+        padding-left: 0;
+    }
+
+    /* Mostrar los nombres de las columnas en móviles */
+    .column-name {
+        display: block;  /* Muestra los nombres de las columnas en móviles */
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+    /* Ocultar las columnas que no se necesitan en móviles */
+    .hide-mobile {
+        display: none;
+    }
+}
+
+/* Estilos para pantallas más grandes (escritorios, tabletas) */
+@media screen and (min-width: 769px) {
+    /* Ocultar los nombres de las columnas en pantallas grandes */
+    .column-name {
+        display: none;  /* Los nombres de las columnas no se muestran en pantallas grandes */
+    }
+}
