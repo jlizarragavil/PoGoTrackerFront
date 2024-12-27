@@ -1,0 +1,152 @@
+/* Global styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #2d3748;
+  font-family: 'Roboto', sans-serif;
+}
+
+.app-container {
+  min-height: 100vh;
+  background-color: #2d3748;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #2563eb;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.code-container {
+  position: relative;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.panel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.p-menuitem-link:hover {
+  background: #647188 !important;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, p, li {
+  color: #fff;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.titleGoogle {
+  font-family: "Jersey 20", sans-serif;
+  font-weight: 100;
+  color: black;
+  font-size: 8vh;
+}
+
+pre {
+  width: 100%;
+  margin: 0;
+  padding: 1em;
+  white-space: pre-wrap;
+  border-radius: 8px; /* Bordes redondeados para un estilo más suave */
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+  color: #333; /* Color de texto más oscuro para los bloques de código */
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para los bloques de código */
+}
+
+pre code.language-javascript {
+  white-space: pre-wrap;
+}
+
+pre code.language-console {
+  white-space: pre-wrap;
+}
+
+.container {
+  display: flex;
+  margin-left: 0%;
+  align-items: center;
+}
+
+.menu {
+  flex: 1;
+}
+
+.photo img {
+  max-width: 100%;
+  max-height: 100%; /* Mantener la imagen ajustada */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Para paneles con fondo oscuro */
+.features, .updates {
+  background-color: #2d3748; /* Fondo oscuro para mantener la consistencia */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.features h2, .updates h3 {
+  color: #2563eb; /* Mantener el color azul en los títulos */
+}
+
+.features p, .updates p {
+  color: #ddd; /* Texto suave gris claro para mejor contraste */
+}
+
+.coffee-donation a img {
+  transition: transform 0.3s ease;
+}
+
+.coffee-donation a img:hover {
+  transform: scale(1.1); /* Animación de escala al pasar el cursor */
+}
+
+/* Responsive: Media queries */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .features, .updates {
+    margin-bottom: 20px;
+  }
+
+  .updates {
+    width: 100%;
+  }
+}

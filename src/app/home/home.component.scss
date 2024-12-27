@@ -1,20 +1,24 @@
 .home-container {
-  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
 
   header {
     text-align: center;
     margin-bottom: 40px;
 
     h1 {
-      font-size: 2rem;
-      color: #333;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #3b82f6;
+      margin-bottom: 10px;
     }
 
     p {
-      font-size: 1rem;
-      color: #555;
+      font-size: 1.2rem;
+      color: #4b5563;
     }
   }
 
@@ -24,52 +28,78 @@
     gap: 40px;
 
     .features, .updates {
-      background-color: #f4f4f4;
+      background-color: #2d3748;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+    
 
     .features {
-      flex: 1;
+      flex: 2;
+
       h2 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+        color: #2563eb;
         margin-bottom: 20px;
       }
 
       p {
         font-size: 1rem;
-        margin: 10px 0;
+        line-height: 1.6;
+        margin-bottom: 15px;
+
+        strong {
+          color: #3b82f6;
+        }
       }
     }
 
     .updates {
-      width: 300px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 20px;
 
       .update-box {
-        background-color: #ffffff;
+        background-color: #5c6d8b;
         padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid #83ace0;
+        border-radius: 12px;
+        border-left: 6px solid #3b82f6;
+
         h3 {
-          font-size: 1.25rem;
+          font-size: 1.4rem;
+          color: #1f2937;
           margin-bottom: 10px;
-          color: #333;
         }
 
         p {
           font-size: 1rem;
-          color: #555;
+          color: #4b5563;
         }
       }
     }
   }
 
-  // Media query for mobile devices
+  .coffee-donation {
+    margin-top: 30px;
+    text-align: center;
+
+    a {
+      display: inline-block;
+
+      img {
+        height: 50px;
+        width: auto;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
   @media (max-width: 768px) {
     .main-content {
       flex-direction: column;
