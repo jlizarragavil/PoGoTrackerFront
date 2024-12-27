@@ -8,6 +8,7 @@ import { GblGameComponent } from './gbl-game/gbl-game.component';
 import { RegisterComponent } from './register/register.component';
 import { BattleLogComponent } from './battle-log/battle-log.component';
 import { HomeComponent } from './home/home.component';
+import { ContactComponent } from './contact/contact.component';
 const routes: Routes = [
   { path: '',  component: HomeComponent },
   { path: 'xp-tracker', component: XpLogComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'battle-log', component: BattleLogComponent },
+  { path: 'contact', component: ContactComponent },
 ];
 
 @NgModule({

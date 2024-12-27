@@ -12,7 +12,7 @@
                         <span class="font-bold">Set the limit for XP </span>
                         <p-dropdown [options]="xpGraphic" [(ngModel)]="selectedOverviewWeek"
                             (onChange)="changeXpLimit($event, null); overview.refresh()"></p-dropdown>
-
+                        <span class="font-bold" style="margin-left: 10%;">Total XP: {{totalXpFormatted}}</span>
                     </div>
 
                     <div class="graph mb-3">
@@ -130,7 +130,7 @@
                 <div class="card p-0 widget-overview-box widget-overview-box-2">
                     <div class="flex align-items-center justify-content-start pt-3 pb-2 px-4">
                         <div class="pl-3 overflow-hidden">
-                            <span class="header block white-space-nowrap overflow-hidden">XP needed to hit lvl 50:
+                            <span class="header block white-space-nowrap overflow-hidden">{{xpLabel}}
                             </span>
                             <span class="block text-2xl font-bold text-primary">{{
                                 totalXpToFifty.toLocaleString('en-EN') }}</span>
@@ -143,7 +143,7 @@
                         <div class="pl-3 overflow-hidden">
                             <span class="header block white-space-nowrap overflow-hidden">Days needed to hit lvl 50:
                             </span>
-                            <span class="block text-2xl font-bold text-primary">{{daysNeeded | number:'1.2-2' }}</span>
+                            <span class="block text-2xl font-bold text-primary">{{daysNeeded}}</span>
                         </div>
                     </div>
                 </div>
@@ -191,8 +191,7 @@
                                             {{ record.luckyEgg }}
                                         </td>
                                         <td>
-                                            <button (click)="deleteRecord(record)"
-                                                    class="p-button p-component p-button-danger">Delete</button>
+                                            <button (click)="deleteRecord(record)" class="p-button p-component p-button-danger">Delete</button>
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -205,3 +204,15 @@
         <br>
     </div>
 </div>
+<p-dialog [(visible)]="showConfirmDialog" [modal]="true" [closable]="false" header="Confirm Deletion">
+    <p style="color: red;">
+      Are you sure you want to delete the record with Total XP: 
+      <strong>{{ selectedRecord?.totalXP | number: '1.0-0' }}</strong> 
+      and Date: 
+      <strong>{{ selectedRecord?.date | date: 'shortDate' }}</strong>?
+    </p>
+    <p-footer>
+      <button pButton type="button" label="No" (click)="onCancelDelete()" class="p-button-text"></button>
+      <button pButton type="button" label="Yes" (click)="onConfirmDelete()" class="p-button-danger"></button>
+    </p-footer>
+  </p-dialog>

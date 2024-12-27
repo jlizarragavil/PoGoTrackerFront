@@ -46,4 +46,12 @@ export class XpServiceService {
   addBattleLog(id: string, battleLog: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${id}/battle-log`, battleLog);
   }
+
+  // Eliminar un registro de XP por totalXP y dailyXPDifference
+  deleteXPRecord(user: string, totalXP: number, dailyXPDifference: number): Observable<any> {
+    const url = `${this.apiUrl}/${user}/xpRecord?totalXP=${totalXP}&dailyXPDifference=${dailyXPDifference}`;
+    return this.http.delete(url);
+  }
+
+
 }

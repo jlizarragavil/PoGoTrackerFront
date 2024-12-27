@@ -37,6 +37,7 @@ import { RegisterComponent } from './register/register.component';
 import { BattleLogComponent } from './battle-log/battle-log.component';
 import { HomeComponent } from './home/home.component';
 import { TreeTableModule } from 'primeng/treetable';
+import { ContactComponent } from './contact/contact.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { TreeTableModule } from 'primeng/treetable';
     GblGameComponent,
     RegisterComponent,
     BattleLogComponent,
-    HomeComponent
+    HomeComponent,
+    ContactComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,0 +1,18 @@
+.contact-message {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.5rem; /* Tamaño de letra más grande */
+  }
+  
+  .contact-message a {
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 1.5rem; /* Aumentar el tamaño de la fuente en el enlace también */
+  }
+  
+  .contact-message a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,58 @@
+.main-container {
+  display: flex;
+  justify-content: space-between; /* Alinea izquierda y derecha */
+  gap: 2rem;
+  align-items: flex-start; /* Alineación vertical */
+}
+
+.content-left {
+  flex: 1 1 60%; /* Toma el 60% del espacio */
+}
+
+.content-right {
+  flex: 1 1 40%; /* Toma el 40% restante */
+  text-align: right; /* Alinea el texto a la derecha */
+}
+
+.options-container {
+  display: flex;
+  gap: 1rem; /* Espaciado entre tarjetas */
+  flex-wrap: wrap; /* Adapta en pantallas pequeñas */
+}
+
+.card.widget-overview-chart {
+  flex: 1 1 18rem; /* Tarjetas con ancho mínimo de 18rem */
+  max-width: 18rem; /* Ancho máximo */
+}
+
+.calculate-button {
+  width: 100%; /* Hacer que el botón ocupe todo el ancho disponible */
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column; /* Diseño vertical en móviles */
+    gap: 1rem; /* Menor espacio entre las secciones */
+  }
+  .content-left, .content-right {
+    width: 100%; /* Asegura que cada sección ocupe el 100% en móviles */
+    text-align: center; /* Centrado en pantallas pequeñas */
+  }
+  .options-container {
+    justify-content: center;
+  }
+
+  .card.widget-overview-chart {
+    flex: 1 1 45%; /* Reduzco el tamaño de las tarjetas */
+    max-width: 45%; /* Reduzco el tamaño máximo */
+    margin-bottom: 1rem; /* Añadido espacio inferior para separar las tarjetas */
+  }
+
+  .calculate-button {
+    width: 100%; /* Asegura que el botón ocupe todo el ancho en móviles */
+  }
+
+  h2 {
+    font-size: 1.2rem; /* Reduce el tamaño de la fuente de Total XP per catch */
+  }
+}

@@ -19,6 +19,9 @@ export class XpLogComponent implements OnInit {
   overviewChartOptions: any;
   average: any;
   totalXpToFifty: any;
+  totalXpFormatted: any;
+  totalXp: any;
+  xpLabel: any;
   daysNeeded: any;
   xpRecords: XPTracker | null = null;
   xpRecordsTable: XPRecord[] = [];
@@ -28,10 +31,15 @@ export class XpLogComponent implements OnInit {
   username: string | null = '';
   isLoggedIn: boolean = false;
   totalXP: number = 0;
+  showConfirmDialog: boolean = false;
+selectedRecord: XPRecord | null = null;
 
-  constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe, private authService: AuthService) {}
+  constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+  loadData(): void {
     this.isLoggedIn = this.authService.isUserLoggedIn();
     this.username = this.authService.getUsername();
     this.selectedOverviewWeek = 2500000;
@@ -43,14 +51,14 @@ export class XpLogComponent implements OnInit {
       this.xpGraphic.push(id);
     }
     this.changeXpLimit(null, this.selectedOverviewWeek);
-    //this.changeTableLength(15)
   }
 
   fetchXpRecords(): void {
     this.xpServiceService.getXpRecordById(this.username!).subscribe(
       data => {
         this.xpRecords = data;
-        this.xpRecordsTable = this.calculateDailyXP(this.xpRecords?.xpRecords || []);
+       // this.xpRecordsTable = this.calculateDailyXP(this.xpRecords?.xpRecords || []);
+       this.xpRecordsTable = this.xpRecords?.xpRecords || [];
         this.updateStatistics();
         if (this.xpRecords && Array.isArray(this.xpRecords.xpRecords)) {
           this.updateOverviewChart(this.xpRecords.xpRecords, 7);
@@ -113,32 +121,70 @@ export class XpLogComponent implements OnInit {
     }
   }
 
-  deleteRecord(index: number) {
-    console.log("delete")
-    alert("Working on this :)");
-}
+  deleteRecord(record: XPRecord): void {
+    this.selectedRecord = record;
+    this.showConfirmDialog = true;
+  }
+  
+  // Acción de cancelar
+  onCancelDelete(): void {
+    this.selectedRecord = null;
+    this.showConfirmDialog = false;
+  }
+  
+  // Acción de confirmar
+  onConfirmDelete(): void {
+    if (this.selectedRecord) {
+      this.deleteXPRecord(this.selectedRecord.totalXP, this.selectedRecord.dailyXPDifference);
+      this.loadData();
+    }
+    this.selectedRecord = null;
+    this.showConfirmDialog = false;
+  }
+  
+  // Método de eliminación real
+  deleteXPRecord(totalXP: number, dailyXPDifference: number): void {
+    this.xpServiceService.deleteXPRecord(this.username!, totalXP, dailyXPDifference).subscribe({
+      next: () => {
+        this.xpRecordsTable = this.xpRecordsTable.filter(
+          record => !(record.totalXP === totalXP && record.dailyXPDifference === dailyXPDifference)
+        );
+      },
+      error: (err) => console.error('Error deleting record', err),
+    });
+  }
+  removeRecordFromTable(totalXP: number, dailyXPDifference: number) {
+    this.xpRecordsTable = this.xpRecordsTable.filter(
+      (record) => record.totalXP !== totalXP || record.dailyXPDifference !== dailyXPDifference
+    );
+
+    this.xpRecordsTable = this.xpRecords?.xpRecords || [];
+  }
 
   calculateDailyXP(xpRecords: XPRecord[]): XPRecord[] {
     const dailyXP: { [date: string]: XPRecord } = {};
-
+  
     xpRecords.forEach(record => {
-      const date = this.datePipe.transform(record.date, 'shortDate')!;
+      const date = this.datePipe.transform(record.date, 'yyyy-MM-dd')!;
+      
       if (!dailyXP[date]) {
         dailyXP[date] = { ...record };
-        dailyXP[date].avgDailyXp = 0; // Initialize avgDailyXp
+        dailyXP[date].avgDailyXp = 0;
       } else {
         dailyXP[date].dailyXPDifference += record.dailyXPDifference;
       }
     });
-
+  
     const dailyXPArray = Object.values(dailyXP);
+
     dailyXPArray.forEach((record, index) => {
       const totalXP = dailyXPArray.slice(0, index + 1).reduce((sum, rec) => sum + rec.dailyXPDifference, 0);
       record.avgDailyXp = totalXP / (index + 1);
     });
-
+  
     return dailyXPArray;
   }
+  
 
   updateStatistics(): void {
     if (!this.xpRecords) {
@@ -148,12 +194,23 @@ export class XpLogComponent implements OnInit {
     const dailyXP = this.calculateDailyXP(this.xpRecords.xpRecords);
     const totalXP = dailyXP.reduce((sum, xp) => sum + xp.dailyXPDifference, 0);
     const daysCount = dailyXP.length;
-
+    this.totalXp = this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP;
+    this.totalXpFormatted = this.formatNumber(this.totalXp);
     this.average = totalXP / daysCount;
-    this.totalXpToFifty = 176000000 - this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP;
-    this.daysNeeded = this.totalXpToFifty / this.average;
-  }
+    if (this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP > 176000000) {
+      this.xpLabel = 'XP over level 50: ';
+      this.totalXpToFifty = this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP - 176000000;
+      this.daysNeeded = 'You rock';
+    } else {
+      this.xpLabel = 'XP needed to hit lvl 50';
+      this.totalXpToFifty = 176000000 - this.xpRecords.xpRecords[this.xpRecords.xpRecords.length - 1].totalXP;
+      this.daysNeeded = this.totalXpToFifty / this.average;
+    }
 
+  }
+  formatNumber(value: number): string {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   getOrdersOptions(maxXP: any) {
     return {
       plugins: {
