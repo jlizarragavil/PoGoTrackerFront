@@ -46,4 +46,9 @@ export class BattleLogService {
   resetBattleLogs(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}/battles/reset`);
   }
+  deleteBattleLogEntry(id: string, date: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}/battles`, {
+      body: { date: date }
+    });
+  }
 }

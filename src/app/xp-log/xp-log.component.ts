@@ -32,7 +32,7 @@ export class XpLogComponent implements OnInit {
   isLoggedIn: boolean = false;
   totalXP: number = 0;
   showConfirmDialog: boolean = false;
-selectedRecord: XPRecord | null = null;
+  selectedRecord: XPRecord | null = null;
 
   constructor(private xpServiceService: XpServiceService, private datePipe: DatePipe, private authService: AuthService) { }
 
@@ -57,8 +57,8 @@ selectedRecord: XPRecord | null = null;
     this.xpServiceService.getXpRecordById(this.username!).subscribe(
       data => {
         this.xpRecords = data;
-       // this.xpRecordsTable = this.calculateDailyXP(this.xpRecords?.xpRecords || []);
-       this.xpRecordsTable = this.xpRecords?.xpRecords || [];
+        // this.xpRecordsTable = this.calculateDailyXP(this.xpRecords?.xpRecords || []);
+        this.xpRecordsTable = this.xpRecords?.xpRecords || [];
         this.updateStatistics();
         if (this.xpRecords && Array.isArray(this.xpRecords.xpRecords)) {
           this.updateOverviewChart(this.xpRecords.xpRecords, 7);
@@ -125,13 +125,13 @@ selectedRecord: XPRecord | null = null;
     this.selectedRecord = record;
     this.showConfirmDialog = true;
   }
-  
+
   // Acción de cancelar
   onCancelDelete(): void {
     this.selectedRecord = null;
     this.showConfirmDialog = false;
   }
-  
+
   // Acción de confirmar
   onConfirmDelete(): void {
     if (this.selectedRecord) {
@@ -141,7 +141,7 @@ selectedRecord: XPRecord | null = null;
     this.selectedRecord = null;
     this.showConfirmDialog = false;
   }
-  
+
   // Método de eliminación real
   deleteXPRecord(totalXP: number, dailyXPDifference: number): void {
     this.xpServiceService.deleteXPRecord(this.username!, totalXP, dailyXPDifference).subscribe({
@@ -163,10 +163,10 @@ selectedRecord: XPRecord | null = null;
 
   calculateDailyXP(xpRecords: XPRecord[]): XPRecord[] {
     const dailyXP: { [date: string]: XPRecord } = {};
-  
+
     xpRecords.forEach(record => {
       const date = this.datePipe.transform(record.date, 'yyyy-MM-dd')!;
-      
+
       if (!dailyXP[date]) {
         dailyXP[date] = { ...record };
         dailyXP[date].avgDailyXp = 0;
@@ -174,17 +174,17 @@ selectedRecord: XPRecord | null = null;
         dailyXP[date].dailyXPDifference += record.dailyXPDifference;
       }
     });
-  
+
     const dailyXPArray = Object.values(dailyXP);
 
     dailyXPArray.forEach((record, index) => {
       const totalXP = dailyXPArray.slice(0, index + 1).reduce((sum, rec) => sum + rec.dailyXPDifference, 0);
       record.avgDailyXp = totalXP / (index + 1);
     });
-  
+
     return dailyXPArray;
   }
-  
+
 
   updateStatistics(): void {
     if (!this.xpRecords) {

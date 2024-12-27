@@ -81,7 +81,7 @@
                                     <td>{{ 5 - log.victories }}</td>
                                     <td>{{ log.elo }}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                        <button class="btn btn-danger btn-sm" (click)="confirmDelete(log)">Delete</button>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -151,4 +151,18 @@
             </div>
         </div>
     </div>
+    <hr>
 </div>
+
+<p-dialog header="Confirm Deletion" [(visible)]="displayModal" [modal]="true" [closable]="false">
+    <p style="color: red;">Are you sure you want to delete this battle log?</p>
+    <p style="color: black;">Date: <strong>{{logToDeleteModal}}</strong></p>
+    <p style="color: black;">ELO: <strong>{{eloToDelete}}</strong></p>
+    <p style="color: black;">Victories: <strong>{{victoriesModal}}</strong></p>
+    <p style="color: black;">Defeats: <strong>{{defeatsModal}}</strong></p>
+    <p-footer>
+      <button type="button" pButton label="Cancel" icon="pi pi-times" (click)="closeModal()"></button>
+      <button type="button" pButton label="Confirm" icon="pi pi-check" (click)="deleteBattleLog()"></button>
+    </p-footer>
+  </p-dialog>
+  

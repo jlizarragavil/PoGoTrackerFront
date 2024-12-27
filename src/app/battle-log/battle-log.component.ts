@@ -19,6 +19,12 @@ export class BattleLogComponent implements OnInit {
   leagueSelected: string = '';
   overviewChart: any;
   overviewChartOptions: any;
+  displayModal: boolean = false;
+  logToDelete: string = '';
+  logToDeleteModal: string = '';
+  victoriesModal: any;
+  defeatsModal: any;
+  eloToDelete: any = null;
   newBattleLog: BattleLog = {
     league: '',
     subLeague: '',
@@ -149,7 +155,7 @@ export class BattleLogComponent implements OnInit {
     console.log(this.leagueSelected)
     console.log(this.newBattleLog.elo)
     if (!this.leagueSelected || this.newBattleLog.elo === 0) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Please fill in the League and Elo fields.'});
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill in the League and Elo fields.' });
       return;
     }
     this.newBattleLog.date = new Date().toISOString();
@@ -158,6 +164,31 @@ export class BattleLogComponent implements OnInit {
     console.log('Payload:', this.newBattleLog);
     this.newBattleLog.defeats = 5 - this.newBattleLog.victories;
     this.battleLogService.addBattleLog(this.username, this.newBattleLog).subscribe(log => {
+      let toastMessage: string;
+      console.log("victorias: ", this.newBattleLog.victories);
+      switch (this.newBattleLog.victories) {
+        case 0:
+          toastMessage = "No worries, we'll blame the lag!";
+          break;
+        case 1:
+          toastMessage = "Hang in there, next one’s yours!";
+          break;
+        case 2:
+          toastMessage = "Not bad, you're warming up!";
+          break;
+        case 3:
+          toastMessage = "Great effort, you'll crush it next time!";
+          break;
+        case 4:
+          toastMessage = "Almost there, one more and you're golden!";
+          break;
+        case 5:
+          toastMessage = "You rock! Champion status unlocked!";
+          break;
+        default:
+          toastMessage = "Keep going! Victory is near!";
+      }
+      this.messageService.add({ severity: 'success', summary: 'Battle Log Added', detail: toastMessage });
       this.battleLogs.unshift(log);
       this.newBattleLog = {
         league: '',
@@ -173,31 +204,66 @@ export class BattleLogComponent implements OnInit {
       setTimeout(() => {
         this.highlightFirstRow();
       }, 1000);
-      let toastMessage: string;
-    switch (this.newBattleLog.victories) {
-      case 0:
-        toastMessage = "No worries, we'll blame the lag!";
-        break;
-      case 1:
-        toastMessage = "Hang in there, next one’s yours!";
-        break;
-      case 2:
-        toastMessage = "Not bad, you're warming up!";
-        break;
-      case 3:
-        toastMessage = "Great effort, you'll crush it next time!";
-        break;
-      case 4:
-        toastMessage = "Almost there, one more and you're golden!";
-        break;
-      case 5:
-        toastMessage = "You rock! Champion status unlocked!";
-        break;
-      default:
-        toastMessage = "Keep going! Victory is near!";
-    }
-    this.messageService.add({severity: 'success', summary: 'Battle Log Added', detail: toastMessage});
-  });
+      
+    });
+  }
+
+  confirmDelete(date: BattleLog) {
+    console.log(date);
+    this.logToDelete = date.date;
+    const dateStr = this.logToDelete;
+    this.victoriesModal = date.victories;
+    this.defeatsModal =  date.defeats;
+
+    const dateModal = new Date(dateStr);
+    const month = dateModal.getMonth() + 1;
+    const day = dateModal.getDate();
+    const year = dateModal.getFullYear();
+
+    const formattedDate = `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+    this.logToDeleteModal = formattedDate;
+    this.eloToDelete = date.elo;
+    this.displayModal = true;
+  }
+
+  closeModal() {
+    this.displayModal = false;
+  }
+
+  deleteBattleLog(): void {
+    this.battleLogService.deleteBattleLogEntry(this.username, this.logToDelete).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Battle log deleted successfully'
+        });
+        console.log('Battle log deleted:', response);
+        
+        this.loadBattleLogs();
+        
+        this.displayModal = false;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to delete battle log'
+        });
+        console.error('Error deleting battle log:', error);
+      }
+    );
+  }
+
+  loadBattleLogs() {
+    this.battleLogService.getBattleLogs(this.username).subscribe(
+      (data) => {
+        this.battleLogs = data;
+      },
+      (error) => {
+        console.error('Error loading battle logs:', error);
+      }
+    );
   }
 
   onLeagueChange(event: any): void {
