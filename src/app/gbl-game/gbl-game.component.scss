@@ -1,0 +1,97 @@
+.game-container {
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 50%;
+  margin: 0 auto;  /* Centra el contenedor */
+  border: 2px solid #007bff; /* Borde del marco con color azul */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para efecto de profundidad */
+  background-color: #afcee2; /* Fondo blanco para la sección */
+}
+
+h2 {
+  color: #1565c0; /* Color azul para el encabezado */
+  margin-bottom: 1.5rem;
+}
+
+p {
+  font-size: 1rem;
+  color: #333333; /* Color gris oscuro para el texto */
+  margin-bottom: 1rem;
+}
+
+.user-input {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-size: 1rem;
+  color: #ffffff; /* Color blanco para el texto del label */
+  margin-right: 0.5rem;
+}
+
+input[type="text"] {
+  font-size: 1rem;
+  padding: 0.75rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px;
+  background-color: #f1f1f1; /* Fondo suave para el input */
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #007bff; /* Fondo azul para el botón */
+  color: white; /* Texto blanco en el botón */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3; /* Cambio de color al pasar el mouse */
+  }
+}
+
+button:focus {
+  outline: none;
+  border: 2px solid #0056b3; /* Borde azul cuando se selecciona */
+}
+
+.result-message {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4caf50; /* Color verde para los mensajes correctos */
+  margin-top: 1rem;
+}
+
+.result-message.error {
+  color: #f44336; /* Color rojo para los mensajes de error */
+}
+
+button, input {
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 1rem;
+    max-width: 90%;  /* En pantallas pequeñas, la caja se expande */
+  }
+
+  input[type="text"] {
+    width: 200px;  /* Ajuste del ancho del input para pantallas pequeñas */
+  }
+
+  button {
+    padding: 0.5rem 1rem;  /* Ajuste del tamaño del botón */
+    font-size: 0.9rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}

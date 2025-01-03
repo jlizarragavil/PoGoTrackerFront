@@ -57,7 +57,10 @@ h1 {
   color: black;
   font-size: 8vh;
 }
-
+@media (max-width: 768px) {
+  .titleGoogle {
+    font-size: 6vh;  /* Ajusta el tamaño para pantallas pequeñas */
+  }}
 pre {
   width: 100%;
   margin: 0;

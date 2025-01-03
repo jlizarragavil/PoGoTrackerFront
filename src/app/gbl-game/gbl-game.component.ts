@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-gbl-game',
   templateUrl: './gbl-game.component.html',
-  styleUrl: './gbl-game.component.css'
+  styleUrl: './gbl-game.component.scss'
 })
 export class GblGameComponent {
   pokemon = [

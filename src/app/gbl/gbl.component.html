@@ -1,4 +1,4 @@
-<div class="table-container">
+<div class="table-container" style="background-color: #3d434d;">
     <div class="table-wrapper">
       <p-table #dt [value]="pokemon" styleClass="p-datatable-gridlines" 
           [tableStyle]="{ 'min-width': '100%' }" [paginator]="true" [rows]="10"
@@ -12,7 +12,7 @@
                       type="text" 
                       (input)="filterTable($event)" 
                       placeholder="Search by name" 
-                  />
+                      />
                   </th>
                   <th>Atk1</th>
                   <th>Atk2</th>
@@ -21,8 +21,8 @@
           <ng-template pTemplate="body" let-pokemon>
               <tr class="pokemon-row">
                   <td class="name-column">{{ pokemon.name }}</td>
-                  <td [ngClass]="getAttackClass(pokemon.type1)">{{ pokemon.atk1 }}</td>
-                  <td [ngClass]="getAttackClass(pokemon.type2)">{{ pokemon.atk2 }}</td>
+                  <td [ngClass]="getAttackClass(pokemon.type1)"><p style="color: black;">{{ pokemon.atk1 }}</p></td>
+                  <td [ngClass]="getAttackClass(pokemon.type2)"><p style="color: black;">{{ pokemon.atk2 }}</p></td>
               </tr>
           </ng-template>
       </p-table>
@@ -33,20 +33,19 @@
           <h3>Legend of Types</h3>
           <ul class="legend-types">
               <li *ngFor="let type of pokemonTypes">
-                  <span [ngClass]="getAttackClass(type)" class="legend-color-box"></span> {{ type | titlecase }}
+                  <span [ngClass]="getAttackClass(type)" class="legend-color-box" style="margin-bottom: 20%;"></span> <p style="color: black;">{{ type | titlecase }}</p>
               </li>
           </ul>
           <br><br><br>
           <h3>Legend of Attack Patterns</h3>
           <ul>
               <li>
-                  <strong>X-</strong> : Sequence decreases by 1 after the first attack (e.g., 8-, becomes 8,7,7,7,...).
+                  <p style="color: black;"><strong>X-</strong> : Sequence decreases by 1 after the first attack (e.g., 8-, becomes 8,7,7,7,...).</p>
               </li>
               <li>
-                  <strong>X*</strong> : Alternating sequence (e.g., 8*, becomes 8,7,8,7,...).
+                <p style="color: black;"><strong>X*</strong> : Alternating sequence (e.g., 8*, becomes 8,7,8,7,...).</p>
               </li>
           </ul>
       </div>
     </div>
-  </div>
-  
+</div>

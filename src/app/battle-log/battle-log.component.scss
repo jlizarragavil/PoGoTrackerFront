@@ -1,11 +1,13 @@
+
 .container {
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
   padding: 20px;
 }
 
 h2 {
   margin-bottom: 20px;
+  color: #1565c0;
 }
 
 .p-card {
@@ -17,10 +19,17 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   background-color: #e0adad;
+  border-radius: 8px;
 }
 
 .p-button {
   margin-top: 10px;
+  background-color: #c366cf;
+  border-color: #f2b807;
+  color: white;
+  &:hover {
+    background-color: #a24bc6;
+  }
 }
 
 .p-field {
@@ -33,7 +42,7 @@ h2 {
 
 .highlight-first-row {
   background-color: rgb(74, 228, 35) !important;
-  transition: background-color 1s ease; 
+  transition: background-color 1s ease;
 }
 
 tr {
@@ -59,4 +68,176 @@ tr {
 
 strong {
   color: #ad1ce6 !important;
+}
+
+.container p {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.container a {
+  color: #f2b807;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container a:hover {
+  text-decoration: underline;
+}
+
+/* Card styling */
+.card {
+  border: 2px solid #f2b807;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #3b4cca;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+p-dropdown {
+  margin-left: 1rem;
+}
+
+input[type="text"], input[type="number"] {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  background-color: #f1f1f1;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background-color: #c366cf;
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a24bc6;
+  }
+}
+
+.victories-selection {
+  display: flex;
+  gap: 1rem;
+}
+
+.victory-option {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #c09191;
+  border-radius: 10px;
+  width: 60px;
+  transition: background-color 0.3s ease;
+
+  &.selected-victory {
+    background-color: #e0bdbd;
+  }
+
+  label {
+    color: black;
+    font-weight: bold;
+  }
+
+  label.selected-victory {
+    color: #f2b807;
+  }
+
+  img {
+    width: 30px;
+    margin-top: 0.5rem;
+  }
+}
+
+.modal-content {
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: #3b4cca;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  padding: 1rem;
+}
+
+.modal-footer {
+  padding: 10px;
+  text-align: center;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table thead {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table td {
+  font-size: 1.1rem;
+}
+
+.graph {
+  margin-top: 20px;
+  height: 300px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.btn-close {
+  font-size: 1rem; 
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.25rem; 
+  color: #333;
+  opacity: 0.6; 
+  
+  &:hover {
+    opacity: 1;
+  }
 }
