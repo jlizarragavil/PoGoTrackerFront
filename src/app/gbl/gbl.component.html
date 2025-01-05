@@ -19,10 +19,14 @@
               </tr>
           </ng-template>
           <ng-template pTemplate="body" let-pokemon>
-              <tr class="pokemon-row">
-                  <td class="name-column">{{ pokemon.name }}</td>
-                  <td [ngClass]="getAttackClass(pokemon.type1)"><p style="color: black;">{{ pokemon.atk1 }}</p></td>
-                  <td [ngClass]="getAttackClass(pokemon.type2)"><p style="color: black;">{{ pokemon.atk2 }}</p></td>
+            <tr class="pokemon-row">
+                <td class="name-column">{{ pokemon.name }}</td>
+                <td [ngClass]="getAttackClass(pokemon.type1)">
+                  <p class="attack-value">{{ pokemon.atk1 }}</p>
+                </td>
+                <td [ngClass]="getAttackClass(pokemon.type2)">
+                  <p class="attack-value">{{ pokemon.atk2 }}</p>
+                </td>
               </tr>
           </ng-template>
       </p-table>

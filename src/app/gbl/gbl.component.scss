@@ -14,8 +14,39 @@
   border-radius: 8px;
   background-color: #ffffff;
   padding: 1rem;
-  width: 70%;  /* En pantallas grandes la tabla ocupa el 70% */
-  overflow: hidden;  /* Evita el scroll horizontal */
+  width: 65%; 
+  overflow: hidden;
+  background: linear-gradient(to bottom, #ba9ebd, #ffffff);
+}
+.name-column {
+  font-weight: bold;
+  color: #3b5998;
+}
+
+.pokemon-row {
+  transition: background-color 0.3s;
+}
+
+.pokemon-row:hover {
+  background-color: #f9f9f9;
+}
+
+.name-column {
+  font-weight: bold;
+  color: #3b5998;
+   font-size: 18px;
+}
+
+.attack-value {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  color: #000000;
+  text-align: center;
+}
+
+.attack-value:hover {
+  text-decoration: underline;
 }
 
 p-table {

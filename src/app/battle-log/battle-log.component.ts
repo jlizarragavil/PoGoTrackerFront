@@ -33,17 +33,44 @@ export class BattleLogComponent implements OnInit {
     elo: 0,
     battlesInSet: 0,
     setNumber: 0,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
+    season: 0
   };
   battleLogs: BattleLog[] = [];
   leagues: any[] = [];
-
+  useLastSeason: boolean = true;
+  showLastSeason: boolean = true;
+  useLastSeasonData: boolean = true;
+  get lastSeason() {
+    return Math.max(...this.battleLogs.map(log => log.season));
+  }
   constructor(
     private battleLogService: BattleLogService,
     private authService: AuthService,
     private http: HttpClient,
     private messageService: MessageService
   ) { }
+
+  onSeasonCheckboxChange(): void {
+    if (this.useLastSeason) {
+      const lastBattleLog = this.battleLogs[0];
+      if (lastBattleLog) {
+        this.newBattleLog.season = lastBattleLog.season || 0;
+      }
+    } else {
+      this.newBattleLog.season = 0;
+    }
+  }
+  get filteredBattleLogs() {
+    if (this.showLastSeason) {
+      const lastSeason = Math.max(...this.battleLogs.map(log => log.season));
+      return this.battleLogs.filter(log => log.season === lastSeason);
+    }
+    return this.battleLogs;
+  }
+
+  onShowLastSeasonChange() {
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isUserLoggedIn();
@@ -152,8 +179,8 @@ export class BattleLogComponent implements OnInit {
   }
 
   addBattleLog(): void {
-    console.log(this.leagueSelected)
-    console.log(this.newBattleLog.elo)
+    console.log(this.leagueSelected);
+    console.log(this.newBattleLog.elo);
     if (!this.leagueSelected || this.newBattleLog.elo === 0) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill in the League and Elo fields.' });
       return;
@@ -198,13 +225,13 @@ export class BattleLogComponent implements OnInit {
         elo: 0,
         battlesInSet: 0,
         setNumber: 0,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        season: 0 // Reiniciar el campo temporada
       };
       this.getBattleLogs(this.username);
       setTimeout(() => {
         this.highlightFirstRow();
       }, 1000);
-      
     });
   }
 
@@ -274,20 +301,21 @@ export class BattleLogComponent implements OnInit {
   showStats(): void {
     const league = this.newBattleLog.league;
     const subLeague = this.newBattleLog.subLeague;
-
-    this.battleLogService.getBattleStats(this.username, league, subLeague).subscribe(stats => {
+    const season = this.useLastSeasonData ? this.lastSeason : undefined;
+  
+    this.battleLogService.getBattleStats(this.username, league, subLeague, season).subscribe(stats => {
       const totalVictoriesCell = document.getElementById('totalVictories');
       const totalDefeatsCell = document.getElementById('totalDefeats');
       const totalSetsCell = document.getElementById('totalSets');
       const winRateCell = document.getElementById('winRate');
       const averageEloCell = document.getElementById('averageElo');
-
+  
       if (totalVictoriesCell) totalVictoriesCell.innerText = stats.totalVictories;
       if (totalDefeatsCell) totalDefeatsCell.innerText = stats.totalDefeats;
       if (totalSetsCell) totalSetsCell.innerText = stats.totalSets;
       if (winRateCell) winRateCell.innerText = `${stats.winRate.toFixed(2)}%`;
       if (averageEloCell) averageEloCell.innerText = stats.averageElo;
-
+  
       const modalElement = document.getElementById('statsModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);

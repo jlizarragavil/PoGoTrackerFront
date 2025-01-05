@@ -8,5 +8,6 @@ export interface BattleLog {
     battlesInSet: number;
     setNumber: number;
     date: string;
+    season: number;
   }
   

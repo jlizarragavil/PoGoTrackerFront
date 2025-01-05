@@ -26,11 +26,15 @@ export class BattleLogService {
     return this.http.put<any>(`${this.apiUrl}/${id}/battles`, battleLog);
   }
 
-  getBattleStats(id: string, league: string, subLeague?: string): Observable<any> {
-    const url = `${this.apiUrl}/${id}/stats?league=${league}`;
+  getBattleStats(id: string, league: string, subLeague?: string, season?: number): Observable<any> {
+    let url = `${this.apiUrl}/${id}/stats?league=${league}`;
     if (subLeague) {
-      return this.http.get<any>(`${url}&subLeague=${subLeague}`);
+      url += `&subLeague=${subLeague}`;
     }
+    if (season) {
+      url += `&season=${season}`;
+    }
+
     return this.http.get<any>(url);
   }
 
