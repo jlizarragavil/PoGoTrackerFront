@@ -16,7 +16,7 @@
   padding: 1rem;
   width: 65%; 
   overflow: hidden;
-  background: linear-gradient(to bottom, #ba9ebd, #ffffff);
+  background: linear-gradient(to bottom, #a6a5e2, #ffffff);
 }
 .name-column {
   font-weight: bold;
@@ -95,7 +95,7 @@ p-table td {
   flex-direction: column;  /* En pantallas grandes, la leyenda está en columna */
   gap: 1rem;
   padding: 1rem;
-  background-color: #ffffff;
+  background: linear-gradient(to bottom, #a6a5e2, #ffffff);
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

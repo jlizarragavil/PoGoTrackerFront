@@ -2,6 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  
 }
 
 h2 {
@@ -19,6 +20,7 @@ h2 {
   border-collapse: collapse;
   background-color: #e0adad;
   border-radius: 8px;
+  
 }
 
 .p-button {
@@ -72,12 +74,14 @@ strong {
 .container p {
   font-size: 1.2rem;
   color: #333;
+  
 }
 
 .container a {
   color: #f2b807;
   text-decoration: none;
   font-weight: bold;
+  
 }
 
 .container a:hover {
@@ -90,6 +94,12 @@ strong {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, #a6a5e2, #ffffff);
+  
+}
+
+label {
+  font-weight: bold;
 }
 
 .card-header {
@@ -231,7 +241,6 @@ button {
   border: 1px solid #ddd;
 }
 
-/* New styles for the form */
 .alert-warning {
   background-color: #fff3cd;
   color: #856404;

@@ -2,7 +2,8 @@
 html, body {
   height: 100%;
   margin: 0;
-  background-color: #2d3748;
+  //background-color: #2d3748;
+  background-image: url('assets/test.jpg');
   font-family: 'Roboto', sans-serif;
 }
 
@@ -41,7 +42,7 @@ img {
   max-width: 100%;
 }
 
-h1, h2, h3, h4, p, li {
+h1, h2, h3, h4, li {
   color: #fff;
 }
 

@@ -1,5 +1,5 @@
 <div *ngIf="!isLoggedIn" class="container" style="margin-left: 1rem;">
-    <p>You need to <a routerLink="/login" style="color: #f2b807;">log in</a> first</p>
+    <p style="color: wheat;">You need to <a routerLink="/login" style="color: #f2b807;">log in</a> first</p>
 </div>
 
 <br>
@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label for="season">Season: </label>
                             <div *ngIf="useLastSeason" class="form-group">
-                                <p style="color: red; font-size: small;">To edit this field, 'Use Last Season' must be unchecked.</p>
+                                <p style="color: rgb(153, 12, 12); font-size: small; font-weight: bold;">To edit this field, 'Use Last Season' must be unchecked.</p>
                             </div>
                             <input type="numbers" 
                                    id="season" 

@@ -1,6 +1,7 @@
-<br>
-<div class="game-container">
+<div class="game-wrapper" style="padding-top: 1%;">
+  <div class="game-container">
     <h2>Guess the Number of Attacks</h2>
+    
     <p>Pokemon: {{ selectedPokemon?.name }}</p>
     <p>Attack: {{ getAttackName(selectedAttackPattern) }} (Type: {{ getAttackType(selectedAttackPattern) }})</p>
   
@@ -17,3 +18,15 @@
     <button (click)="newRound()">New Round</button>
   </div>
   
+  <div class="game-container">
+    <h3>Legend of Attack Patterns</h3>
+    <ul>
+        <li>
+            <p style="color: black;"><strong>X-</strong> : Sequence decreases by 1 after the first attack (e.g., 8-, becomes 8,7,7,7,...).</p>
+        </li>
+        <li>
+          <p style="color: black;"><strong>X*</strong> : Alternating sequence (e.g., 8*, becomes 8,7,8,7,...).</p>
+        </li>
+    </ul>
+  </div>
+</div>
