@@ -6,29 +6,29 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<header style="height: 5rem;">
-    <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-        <h1 class="titleGoogle">PoGoTracker</h1>
-    </div>
-    
-  </header>
-  <!-- Menubar con items y template para la derecha -->
-  <p-menubar [model]="items">
-    <ng-template pTemplate="start">
-      <!-- Aquí puedes agregar el logo u otros elementos del menú a la izquierda -->
-    </ng-template>
-  
-    <ng-template pTemplate="end">
-      <a pRipple class="flex align-items-center p-menuitem-link" (click)="handleAuthAction()">
-        <span class="pi" [ngClass]="isLoggedIn ? 'pi-sign-out' : 'pi-sign-in'"></span>
-        <span class="ml-2">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
-      </a>
-    </ng-template>
-  </p-menubar>
+<header style="height: 5rem; background-color: #aec1d8;">
+  <div style="width: 100%; display: flex; align-items: center; justify-content: center;background-image: url('assets/mimi.PNG'); background-size: contain;">
+    <h1 class="titleGoogle" style="background-color: #EAE0C7;">PoGoTracker</h1>
+    <!--<img src="assets/test.jpg" alt="PoGoTracker Logo" style="height: 50px;"> -->
+  </div>
+
+</header>
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <a pRipple class="flex align-items-center p-menuitem-link" (click)="handleAuthAction()">
+      <span class="pi" [ngClass]="isLoggedIn ? 'pi-sign-out' : 'pi-sign-in'"></span>
+      <span class="ml-2">{{ isLoggedIn ? 'Logout' : 'Login' }}</span>
+    </a>
+  </ng-template>
+</p-menubar>
+
 <body style="background-color: #3d434d;">
-    <router-outlet></router-outlet>
-    
+  <router-outlet></router-outlet>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body> 
+</body>

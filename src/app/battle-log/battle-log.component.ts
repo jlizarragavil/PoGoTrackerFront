@@ -14,12 +14,17 @@ import { MessageService } from 'primeng/api';
 export class BattleLogComponent implements OnInit {
   isLoggedIn: boolean = true;
   selectedLeague: any = null;
+  selectedLeagueEdit: any = null;
+  victoriesEdit: any = null;
+  subLeagueEdit: any = null;
+  eloEdit: any = null;
   maximumElo: any = null
   username: string = '';
   leagueSelected: string = '';
   overviewChart: any;
   overviewChartOptions: any;
   displayModal: boolean = false;
+  displayModalEdit: boolean = false;
   logToDelete: string = '';
   logToDeleteModal: string = '';
   victoriesModal: any;
@@ -41,6 +46,7 @@ export class BattleLogComponent implements OnInit {
   useLastSeason: boolean = true;
   showLastSeason: boolean = true;
   useLastSeasonData: boolean = true;
+  selectedBattleLog: BattleLog | undefined;
   get lastSeason() {
     return Math.max(...this.battleLogs.map(log => log.season));
   }
@@ -121,6 +127,15 @@ export class BattleLogComponent implements OnInit {
     this.overviewChartOptions = this.getChartOptions(Math.max(...data.reverse()), Math.min(...data));
   }
 
+  editBattleLog(log: BattleLog) {
+    console.log(this.displayModalEdit);
+    console.log('Editing Battle Log:', log);
+    this.displayModalEdit = true;
+    console.log(this.displayModalEdit);
+    this.selectedBattleLog = log;
+
+  }
+
   highlightFirstRow(): void {
 
     const firstRow = document.getElementById('log-row-0');
@@ -185,6 +200,10 @@ export class BattleLogComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill in the League and Elo fields.' });
       return;
     }
+    if (this.useLastSeason) {
+      this.newBattleLog.season = this.lastSeason;
+    }
+
     this.newBattleLog.date = new Date().toISOString();
     this.newBattleLog.league = this.leagueSelected;
     console.log('League selected (before submit):', this.newBattleLog.league);
@@ -240,7 +259,7 @@ export class BattleLogComponent implements OnInit {
     this.logToDelete = date.date;
     const dateStr = this.logToDelete;
     this.victoriesModal = date.victories;
-    this.defeatsModal =  date.defeats;
+    this.defeatsModal = date.defeats;
 
     const dateModal = new Date(dateStr);
     const month = dateModal.getMonth() + 1;
@@ -255,6 +274,7 @@ export class BattleLogComponent implements OnInit {
 
   closeModal() {
     this.displayModal = false;
+    this.displayModalEdit = false;
   }
 
   deleteBattleLog(): void {
@@ -266,9 +286,9 @@ export class BattleLogComponent implements OnInit {
           detail: 'Battle log deleted successfully'
         });
         console.log('Battle log deleted:', response);
-        
+
         this.loadBattleLogs();
-        
+
         this.displayModal = false;
       },
       (error) => {
@@ -298,24 +318,40 @@ export class BattleLogComponent implements OnInit {
     console.log('League selected:', this.newBattleLog.league);
   }
 
+  updateBattleLog(log?: BattleLog) {
+    console.log(log);
+    console.log("datos");
+    console.log("Liga " + this.leagueSelected);
+    console.log("subLiga " + this.subLeagueEdit);
+    console.log("victorias " + this.victoriesEdit);
+    console.log("derrotas " + (5-this.victoriesEdit));
+    console.log("elo " + this.eloEdit);
+    if(log){
+      console.log("Date  " + log.date);
+    }
+
+    alert("Working on this!!");
+    
+  }
+
   showStats(): void {
     const league = this.newBattleLog.league;
     const subLeague = this.newBattleLog.subLeague;
     const season = this.useLastSeasonData ? this.lastSeason : undefined;
-  
+
     this.battleLogService.getBattleStats(this.username, league, subLeague, season).subscribe(stats => {
       const totalVictoriesCell = document.getElementById('totalVictories');
       const totalDefeatsCell = document.getElementById('totalDefeats');
       const totalSetsCell = document.getElementById('totalSets');
       const winRateCell = document.getElementById('winRate');
       const averageEloCell = document.getElementById('averageElo');
-  
+
       if (totalVictoriesCell) totalVictoriesCell.innerText = stats.totalVictories;
       if (totalDefeatsCell) totalDefeatsCell.innerText = stats.totalDefeats;
       if (totalSetsCell) totalSetsCell.innerText = stats.totalSets;
       if (winRateCell) winRateCell.innerText = `${stats.winRate.toFixed(2)}%`;
       if (averageEloCell) averageEloCell.innerText = stats.averageElo;
-  
+
       const modalElement = document.getElementById('statsModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);

@@ -122,8 +122,10 @@ label {
   color: #333;
 }
 
-p-dropdown {
-  margin-left: 1rem;
+.radio-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 input[type="text"], input[type="number"] {

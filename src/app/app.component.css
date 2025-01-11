@@ -10,7 +10,7 @@ header {
 }
 
 ::ng-deep .p-menubar {
-  background-color: rgb(153, 127, 224) /* Cambia este valor al color que prefieras */
+  background: linear-gradient(to bottom, #8584bd, #ffffff); /* Cambia este valor al color que prefieras */
 }
 .layout-container {
   display: flex;
