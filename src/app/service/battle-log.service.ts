@@ -22,11 +22,7 @@ export class BattleLogService {
     return this.http.post<any>(`${this.apiUrl}/${id}/battle-log`, battleLog);
   }
 
-  updateBattleLog(id: string, battleLog: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}/battles`, battleLog);
-  }
-
-  getBattleStats(id: string, league: string, subLeague?: string, season?: number): Observable<any> {
+  getBattleStats(id: string, league: string, subLeague?: string, season?: any): Observable<any> {
     let url = `${this.apiUrl}/${id}/stats?league=${league}`;
     if (subLeague) {
       url += `&subLeague=${subLeague}`;
@@ -54,5 +50,9 @@ export class BattleLogService {
     return this.http.delete<any>(`${this.apiUrl}/${id}/battles`, {
       body: { date: date }
     });
+  }
+
+  updateBattleLog(id: string, battleLog: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${id}/battles`, battleLog);
   }
 }

@@ -132,12 +132,10 @@ pre code.language-console {
   color: #ddd; /* Texto suave gris claro para mejor contraste */
 }
 
-.coffee-donation a img {
-  transition: transform 0.3s ease;
-}
 
 .coffee-donation a img:hover {
-  transform: scale(1.1); /* Animación de escala al pasar el cursor */
+  transform: rotateX(360deg) !important;
+  transition: transform 2s ease !important;
 }
 
 /* Responsive: Media queries */

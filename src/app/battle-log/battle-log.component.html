@@ -2,10 +2,10 @@
     <p style="color: wheat;">You need to <a routerLink="/login" style="color: #f2b807;">log in</a> first</p>
 </div>
 
-<br>
 <p-toast></p-toast>
 <div class="layout-dashboard" *ngIf="isLoggedIn">
-    <div class="container-fluid">
+
+    <div class="container-fluid" style="padding-top: 1%;">
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card" style="border: 2px solid #f2b807; border-radius: 10px;">
@@ -16,8 +16,7 @@
                         <div class="form-group">
                             <label for="league">League: </label>
                             <p-dropdown [options]="leagues" [(ngModel)]="selectedLeague" optionLabel="label"
-                                placeholder="Select a league" (onChange)="onLeagueChange($event)"
-                                style="margin-left: 1rem;">
+                                placeholder="Select a league" (onChange)="onLeagueChange($event)">
                             </p-dropdown>
                         </div>
                         <div class="form-group">
@@ -29,7 +28,7 @@
                             <label for="season">Season: </label>
                             <div *ngIf="useLastSeason" class="form-group">
                                 <p style="color: rgb(153, 12, 12); font-size: small; font-weight: bold;">To edit this
-                                    field, 'Use Last Season' must be unchecked.</p>
+                                    field, 'Use Current Season' must be unchecked.</p>
                             </div>
                             <input type="numbers" id="season" [(ngModel)]="newBattleLog.season"
                                 class="form-control form-control-sm" [disabled]="useLastSeason" placeholder="Season">
@@ -83,28 +82,45 @@
                         <p-table [value]="filteredBattleLogs" [paginator]="true" [rows]="5"
                             styleClass="p-datatable-striped">
                             <ng-template pTemplate="header">
-                                <input type="checkbox" [(ngModel)]="showLastSeason"
-                                    (change)="onShowLastSeasonChange()" />
-                                Show only last season data
+                                <div style="width: 200%;"> <input type="checkbox" [(ngModel)]="showLastSeason"
+                                        (change)="onShowLastSeasonChange()" />
+                                    Show only current season data</div>
+                                <div style="width: 200%;"><input type="checkbox" [(ngModel)]="showDayFormat"
+                                        (change)="onShowDayFormat()" />
+                                    Use data from the hole day</div>
+
+
                                 <tr>
-                                    <th>League</th>
-                                    <th>Sub League</th>
+                                    <th *ngIf="!showDayFormat" style="text-align: center;">League</th>
+                                    <th *ngIf="showDayFormat" style="width: 20%;">Positive / Negative</th>
+                                    <th *ngIf="showDayFormat" style="text-align: center;">Date</th>
+                                    <th *ngIf="!showDayFormat">Sub League</th>
                                     <th>Victories</th>
                                     <th>Defeats</th>
                                     <th>ELO</th>
+                                    <th *ngIf="showDayFormat">ELO WON/LOST</th>
                                     <th>Season</th>
-                                    <th style="text-align: center;">Actions</th>
+                                    <th *ngIf="!showDayFormat" style="text-align: center;">Actions</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-log let-i="rowIndex">
                                 <tr [id]="'log-row-' + i">
-                                    <td>{{ log.league }}</td>
-                                    <td>{{ log.subLeague }}</td>
-                                    <td>{{ log.victories }}</td>
-                                    <td>{{ 5 - log.victories }}</td>
-                                    <td>{{ log.elo }}</td>
-                                    <td>{{ log.season }}</td>
-                                    <td style="display: flex; gap: 10px;">
+                                    <td *ngIf="!showDayFormat" style="text-align: center;">{{ log.league }}</td>
+                                    <td *ngIf="showDayFormat && log.result" style="width: 10%; text-align: center;"
+                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"><b>Positive </b> <i
+                                            class="fas fa-check"></i></td>
+                                    <td *ngIf="showDayFormat && !log.result" style="width: 10%; text-align: center;"
+                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"> <b>Negative </b> <i
+                                            class="fas fa-times"></i></td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;">{{ log.date }}</td>
+                                    <td *ngIf="!showDayFormat" style="text-align: center;">{{ log.subLeague }}</td>
+                                    <td style="text-align: center;">{{ log.victories }}</td>
+                                    <td *ngIf="!showDayFormat" style="text-align: center;">{{ 5 - log.victories }}</td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;">{{ log.defeats }}</td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;">{{ log.eloEnd }}</td>
+                                    <td style="text-align: center;">{{ log.elo }}</td>
+                                    <td style="text-align: center;">{{ log.season }}</td>
+                                    <td *ngIf="!showDayFormat" style="display: flex; gap: 10px;">
                                         <button class="btn btn-primary btn-sm" (click)="editBattleLog(log)"
                                             style=" background-color: rgb(63, 196, 123);">Edit</button>
                                         <button class="btn btn-danger btn-sm"
@@ -113,12 +129,10 @@
                                 </tr>
                             </ng-template>
                         </p-table>
-
-
                     </div>
                 </div>
                 <button style="margin-top: 2rem; background-color: #3b4cca;" class="btn btn-secondary w-100"
-                    (click)="showStats()">Show Stats</button>
+                    (click)="showStats(showLastSeason, showDayFormat)">Show Stats</button>
             </div>
         </div>
     </div>
@@ -126,20 +140,27 @@
 
 <!-- Modal for stats -->
 <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+
+
     <div class="modal-dialog modal-lg">
+
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="statsModalLabel">Battle Statistics</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <!-- <div class="form-group d-flex align-items-center">
+
+                <!--<div class="form-group d-flex align-items-center">
                     <label for="useLastSeason" class="mr-2">Show only last season's data {{lastSeason}}</label>
                     <input type="checkbox" 
                            id="useLastSeason" 
                            [(ngModel)]="useLastSeasonData" 
-                           class="form-check-input">
+                           (ngModelChange)="onLastSeasonChange($event)"
+                           class="form-check-input" [ngStyle]="{'border-color': checkboxColor}">
                   </div>-->
+                <p>{{infoBeingShown}}</p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -220,7 +241,7 @@
         <div>
             <label for="league">League:</label>
             <p-dropdown [options]="leagues" [(ngModel)]="selectedLeague" optionLabel="label"
-                placeholder="Select a league" (onChange)="onLeagueChange($event)" style="margin-left: 1rem;">
+                placeholder="Select a league" (onChange)="onLeagueChange($event)">
             </p-dropdown>
         </div>
         <br>
@@ -229,21 +250,24 @@
             <input type="text" id="subLeague" [(ngModel)]="subLeagueEdit" class="form-control form-control-sm">
         </div>
 
-        <div style="margin-top: 1rem;">
+        <div>
             <label for="victoriesEdit">Victories:</label>
             <div style="display: flex; justify-content: center; gap: 20px;">
                 <div *ngFor="let valueEdit of [0, 1, 2, 3, 4, 5]" style="text-align: center;">
                     <input type="radio" [value]="valueEdit" [(ngModel)]="victoriesEdit" name="victoriesEdit"
-                        id="victory-{{valueEdit}}" style="accent-color: #3b4cca; width: 25px; height: 25px;">
+                        id="victory-{{valueEdit}}" style="accent-color: #3b4cca; width: 20px; height: 20px;">
                     <label for="victory-{{valueEdit}}"
-                        style="margin-top: 5px; color: #333;font-size: 2rem;">{{valueEdit}}</label>
+                        style="margin-top: 5px; color: #333;font-size: 1.5rem;">{{valueEdit}}</label>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label for="elo">ELO</label>
             <input type="number" id="elo" [(ngModel)]="eloEdit" class="form-control form-control-sm">
+            <label for="elo">Season</label>
+            <input type="number" id="elo" [(ngModel)]="seasonEdit" class="form-control form-control-sm">
         </div>
+
     </ng-container>
 
     <p-footer>

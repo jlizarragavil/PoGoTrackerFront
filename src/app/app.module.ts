@@ -38,6 +38,7 @@ import { BattleLogComponent } from './battle-log/battle-log.component';
 import { HomeComponent } from './home/home.component';
 import { TreeTableModule } from 'primeng/treetable';
 import { ContactComponent } from './contact/contact.component';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import { ContactComponent } from './contact/contact.component';
   ],
   imports: [
     HttpClientModule,
+    ProgressSpinnerModule,
     FormsModule,
     ButtonModule,
     DropdownModule,
