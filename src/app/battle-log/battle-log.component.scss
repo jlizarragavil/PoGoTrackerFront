@@ -49,6 +49,10 @@ h2 {
   color: red;
 }
 
+.column-name {
+  display: none;
+}
+
 .highlight-first-row {
   background-color: rgb(74, 228, 35) !important;
   transition: background-color 1s ease;
@@ -313,4 +317,36 @@ label {
 input[type="checkbox"] {
   transform: scale(1.2);
   margin-top: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .buttonM{
+    max-width: 40% !important;
+  }
+  .p-datatable td {
+      display: block;
+      margin-bottom: 10px;
+      padding-left: 0;
+  }
+
+  .column-name {
+      display: block;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+  }
+
+  .hide-mobile {
+      display: none;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .column-name {
+      display: none;
+  }
+  .buttonM{
+    max-width: 40% !important;
+  }
 }

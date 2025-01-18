@@ -30,6 +30,7 @@ export class BattleLogComponent implements OnInit {
   displayModalEdit: boolean = false;
   logToDelete: string = '';
   logToDeleteModal: string = '';
+  currentElo: number = 0;
   victoriesModal: any;
   defeatsModal: any;
   eloToDelete: any = null;
@@ -159,6 +160,7 @@ export class BattleLogComponent implements OnInit {
   getBattleLogs(id: string): void {
     this.battleLogService.getBattleLogs(id).subscribe(logs => {
       this.battleLogs = logs.reverse();
+      this.currentElo = this.battleLogs[0].elo;
       console.log("logssss: ", logs);
       const eloHistory = this.extractEloHistory(logs);
       console.log(eloHistory);
