@@ -6,6 +6,8 @@ import { AuthService } from '../service/auth.service';
 import * as bootstrap from 'bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+
 @Component({
   selector: 'app-battle-log',
   templateUrl: './battle-log.component.html',
@@ -28,11 +30,13 @@ export class BattleLogComponent implements OnInit {
   overviewChartOptions: any;
   displayModal: boolean = false;
   displayModalEdit: boolean = false;
+  selectedSeason: any = null;
   logToDelete: string = '';
   logToDeleteModal: string = '';
   currentElo: number = 0;
   victoriesModal: any;
   defeatsModal: any;
+  isLoading: boolean = false;
   eloToDelete: any = null;
   checkboxColor: string = 'black';
 
@@ -65,6 +69,32 @@ export class BattleLogComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) { }
 
+    @ViewChild('dt') dt: Table | undefined;
+    filterTable(event: Event) {
+      const inputElement = event.target as HTMLInputElement;
+      if (inputElement && this.dt) {
+        const value = inputElement.value;
+        this.dt.filter(value, 'league', 'contains');
+      }
+    }
+    filterTableCup(event: Event) {
+      const inputElement = event.target as HTMLInputElement;
+      if (inputElement && this.dt) {
+        const value = inputElement.value;
+        this.dt.filter(value, 'subLeague', 'contains');
+      }
+    }
+    filterTableSeason(event: Event) {
+      console.log(event)
+      const inputElement = event.target as HTMLInputElement;
+      if (inputElement && this.dt) {
+        const value = inputElement.value;
+        this.dt.filter(value, 'season', 'contains');
+      }
+    }
+
+    
+
   onSeasonCheckboxChange(): void {
     if (this.useLastSeason) {
       const lastBattleLog = this.battleLogs[0];
@@ -78,9 +108,21 @@ export class BattleLogComponent implements OnInit {
   get filteredBattleLogs() {
     if (this.showLastSeason) {
       const lastSeason = Math.max(...this.battleLogs.map(log => log.season));
-      return this.battleLogs.filter(log => log.season === lastSeason).reverse();
+      return this.battleLogs.filter(log => log.season === lastSeason);
     }
     return this.battleLogs;
+  }
+
+  onSeasonChange(){
+    console.log(this.selectedSeason);
+    this.getBattleLogs(this.username);
+    this.showStats(false, this.showDayFormat);
+  }
+
+  clearInput(){
+    this.selectedSeason = null;
+    this.getBattleLogs(this.username);
+    this.showStats(false, this.showDayFormat);
   }
 
   onShowDayFormat() {
@@ -88,7 +130,7 @@ export class BattleLogComponent implements OnInit {
     const battleLogs = this.filteredBattleLogs;
     if (this.showDayFormat) {
       console.log("Showing day format")
-      this.battleLogs = this.groupByDate(battleLogs);
+      this.battleLogs = this.groupByDate(battleLogs).reverse();
       console.log(this.battleLogs)
     } else {
       this.getBattleLogs(this.username);
@@ -97,9 +139,7 @@ export class BattleLogComponent implements OnInit {
 
   groupByDate(data: any[]): any[] {
     const groupedData: { [date: string]: any } = {};
-
     data.forEach(item => {
-
       const date = new Date(item.date).toISOString().split('T')[0];
       if (!groupedData[date]) {
         groupedData[date] = {
@@ -113,19 +153,37 @@ export class BattleLogComponent implements OnInit {
           result: false
         };
       }
-
+    
       groupedData[date].totalVictories += item.victories;
       groupedData[date].totalDefeats += item.defeats;
       groupedData[date].season = item.season;
-      groupedData[date].eloEnd = item.elo;
       groupedData[date].count += 1;
+  
       if (groupedData[date].totalVictories > groupedData[date].totalDefeats) {
         groupedData[date].result = true;
       } else {
         groupedData[date].result = false;
       }
+      if (groupedData[date].count === 1) {
+        groupedData[date].eloEnd = item.elo;
+       
+        console.log("groupedData[date]: ",groupedData[date])
+      }
     });
-
+    
+    const sortedDates = Object.keys(groupedData).sort((a, b) => b.localeCompare(a));
+    
+    sortedDates.forEach((date, index) => {
+      if (index < sortedDates.length - 1) {
+        const nextDate = sortedDates[index + 1];
+        groupedData[date].eloStart = groupedData[nextDate].eloEnd;
+      } else {
+        groupedData[date].eloStart = groupedData[date].eloStart;
+      }
+    });
+    
+    console.log("groupedData: ", groupedData);
+    console.log("groupedData: ", groupedData)
     const result = Object.values(groupedData).map(group => ({
       league: null,
       subLeague: null,
@@ -133,12 +191,12 @@ export class BattleLogComponent implements OnInit {
       victories: group.totalVictories,
       season: group.season,
       defeats: group.totalDefeats,
-      elo: group.eloStart - group.eloEnd,
-      eloEnd: group.eloStart,
+      elo: (group.eloEnd ?? 0) - (group.eloStart ?? 0),
+      eloColor: (group.eloEnd ?? 0) - (group.eloStart ?? 0),
+      eloEnd: group.eloEnd,
       count: group.count,
       result: group.result
     }));
-
     console.log("groupByDate: ", result);
     return result.reverse();
   }
@@ -160,6 +218,12 @@ export class BattleLogComponent implements OnInit {
   getBattleLogs(id: string): void {
     this.battleLogService.getBattleLogs(id).subscribe(logs => {
       this.battleLogs = logs.reverse();
+      if(this.selectedSeason){
+        logs = logs.filter(log => log.season === this.selectedSeason);
+      }else{
+        console.log("last season: ", this.lastSeason)
+        logs = logs.filter(log => log.season === this.lastSeason);
+      }
       this.currentElo = this.battleLogs[0].elo;
       console.log("logssss: ", logs);
       const eloHistory = this.extractEloHistory(logs);
@@ -226,6 +290,7 @@ export class BattleLogComponent implements OnInit {
       ]
     };
     console.log("lo de la tabla: ", this.overviewChart)
+    console.log("dataElo: ", dataElo)
     this.overviewChartOptions = this.getChartOptions(Math.max(...dataElo), Math.min(...dataElo));
   }
 
@@ -377,6 +442,8 @@ export class BattleLogComponent implements OnInit {
   closeModal() {
     this.displayModalEdit = false;
     this.displayModal = false;
+    this.selectedSeason = null;
+    this.showDayFormat = false;
   }
 
   deleteBattleLog(): void {
@@ -421,6 +488,7 @@ export class BattleLogComponent implements OnInit {
   }
 
   updateBattleLog(log?: BattleLog) {
+    this.isLoading = true;
     console.log(log);
     console.log("datos");
     console.log("Liga " + this.leagueSelected);
@@ -455,39 +523,49 @@ export class BattleLogComponent implements OnInit {
 
     this.battleLogService.updateBattleLog(this.username, filteredUpdatedLog).subscribe(
       response => {
+        
         console.log('Battle log updated successfully', response);
         this.messageService.add({ severity: 'success', summary: 'Battle Log Added', detail: "Set updated successfully" });
-
+        setTimeout(() => {
+          this.getBattleLogs(this.username);
+          setTimeout(() => {
+            this.isLoading = false
+          }, 1000);
+        }, 400);
       },
       error => {
+        this.isLoading = false
         console.error('Error updating battle log', error);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error :v' });
       }
     );
-    this.getBattleLogs(this.username);
+  
+    
     this.displayModalEdit = false;
 
   }
 
   showStats(showLast?: boolean, daysFromat?: boolean): void {
-
+    console.log(this.selectedSeason)
     console.log(this.battleLogs);
+    console.log("last seasons: ", this.lastSeason)
     if(daysFromat){
+      console.log("entraaaaaa")
       const eloHistory = this.extractEloDaysHistory(this.battleLogs);
       console.log("eloHistory: ", eloHistory);
-      this.initializeChart(this.battleLogs, true);
+      //this.initializeChart(this.battleLogs, true);
     }
     const league = this.newBattleLog.league;
     const subLeague = this.newBattleLog.subLeague;
     var season
-    if (showLast) {
-      this.infoBeingShown = 'Showing info from current season (' + this.lastSeason + ')';
+    if (this.selectedSeason) {
+      this.infoBeingShown = 'Showing info from season (' + this.selectedSeason + ')';
       season = this.useLastSeasonData ? this.lastSeason : undefined;
     } else {
-      this.infoBeingShown = 'Showing info from all season';
+      this.infoBeingShown = 'Showing info from current season';
       season = null;
     }
-
+    season = this.selectedSeason
 
     this.battleLogService.getBattleStats(this.username, league, subLeague, season).subscribe(stats => {
       console.log("stats: ", stats)
@@ -505,7 +583,11 @@ export class BattleLogComponent implements OnInit {
 
       const modalElement = document.getElementById('statsModal');
       if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement);
+        let modal = bootstrap.Modal.getInstance(modalElement);
+        if (!modal) {
+          modal = new bootstrap.Modal(modalElement);
+        }
+        
         modal.show();
       }
     }, error => {

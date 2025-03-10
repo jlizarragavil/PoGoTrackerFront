@@ -77,11 +77,16 @@
                 <div class="card" style="border: 2px solid #f2b807; border-radius: 10px;">
                     <div class="card-header" style="background-color: #3b4cca; color: white;">
                         <h5>Battle Logs</h5>
-                        <h5> Current Elo: {{currentElo}}</h5> 
+                        <h5> Current Elo: {{currentElo}}</h5>
                     </div>
+                    <div *ngIf="isLoading" class="custom-spinner-container">
+                        <div class="custom-spinner"></div>
+                      </div>
+
+
                     <div class="card-body">
                         <p-table [value]="filteredBattleLogs" [paginator]="true" [rows]="5"
-                            styleClass="p-datatable-striped">
+                            styleClass="p-datatable-striped" #dt>
                             <ng-template pTemplate="header">
                                 <div style="width: 200%;"> <input type="checkbox" [(ngModel)]="showLastSeason"
                                         (change)="onShowLastSeasonChange()" />
@@ -89,38 +94,61 @@
                                 <div style="width: 200%;"><input type="checkbox" [(ngModel)]="showDayFormat"
                                         (change)="onShowDayFormat()" />
                                     Use data from the hole day</div>
+                                <!--<div> <br> <input pInputText class="search-input" type="text"
+                                        (input)="filterTable($event)" placeholder="Search by League" /></div><br> -->
 
 
-                                <tr>
-                                    <th *ngIf="!showDayFormat" style="text-align: center;" >League</th>
+                                <tr style="border-bottom: 2px solid #a1bbd3;">
+
+                                    <th *ngIf="!showDayFormat" style="text-align: center;">League <input pInputText class="search-input" type="text"
+                                        (input)="filterTable($event)" placeholder="Search by League" /></th>
                                     <th *ngIf="showDayFormat" style="width: 20%;">Positive / Negative</th>
                                     <th *ngIf="showDayFormat" style="text-align: center;">Date</th>
-                                    <th *ngIf="!showDayFormat">Sub League</th>
+                                    <th *ngIf="!showDayFormat">Sub League <input pInputText class="search-input" type="text"
+                                        (input)="filterTableCup($event)" placeholder="Search by Cup" /></th>
                                     <th>Victories</th>
                                     <th>Defeats</th>
                                     <th>ELO</th>
                                     <th *ngIf="showDayFormat">ELO WON/LOST</th>
-                                    <th>Season</th>
+                                    <th>Season <input pInputText class="search-input" type="text"
+                                        (input)="filterTableSeason($event)" placeholder="Search by Season" /></th>
                                     <th *ngIf="!showDayFormat" style="text-align: center;">Actions</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-log let-i="rowIndex">
                                 <tr [id]="'log-row-' + i">
-                                    <td *ngIf="!showDayFormat" style="text-align: center;"><span class="column-name">League: </span>{{ log.league }}</td>
+                                    <td *ngIf="!showDayFormat" style="text-align: center;"><span
+                                            class="column-name">League: </span>{{ log.league }}</td>
                                     <td *ngIf="showDayFormat && log.result" style="width: 10%; text-align: center;"
-                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"> <span class="column-name">Result: </span> <b>Positive </b> <i
+                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"> <span
+                                            class="column-name">Result: </span> <b>Positive </b> <i
                                             class="fas fa-check"></i></td>
                                     <td *ngIf="showDayFormat && !log.result" style="width: 10%; text-align: center;"
-                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"> <span class="column-name">Result: </span> <b>Negative </b> <i
+                                        [ngClass]="{'text-success': log.result, 'text-danger': !log.result}"> <span
+                                            class="column-name">Result: </span> <b>Negative </b> <i
                                             class="fas fa-times"></i></td>
-                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span class="column-name">Date: </span> {{ log.date }}</td>
-                                    <td *ngIf="!showDayFormat" style="text-align: center;"> <span class="column-name">Subleague: </span> {{ log.subLeague }}</td>
-                                    <td style="text-align: center;" > <span class="column-name">Victories: </span>{{ log.victories }}</td>
-                                    <td *ngIf="!showDayFormat" style="text-align: center;"> <span class="column-name">Defeats: </span> {{ 5 - log.victories }}</td>
-                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span class="column-name">Defeats: </span> {{ log.defeats }}</td>
-                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span class="column-name">Final elo: </span> {{ log.eloEnd }}</td>
-                                    <td style="text-align: center;"> <span class="column-name">Elo: </span> {{ log.elo }}</td>
-                                    <td style="text-align: center;"> <span class="column-name">Season: </span> {{ log.season }}</td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span
+                                            class="column-name">Date: </span> {{ log.date }}</td>
+                                    <td *ngIf="!showDayFormat" style="text-align: center;"> <span
+                                            class="column-name">Subleague: </span> {{ log.subLeague }}</td>
+                                    <td style="text-align: center;"> <span class="column-name">Victories: </span>{{
+                                        log.victories }}</td>
+                                    <td *ngIf="!showDayFormat" style="text-align: center;"> <span
+                                            class="column-name">Defeats: </span> {{ 5 - log.victories }}</td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span
+                                            class="column-name">Defeats: </span> {{ log.defeats }}</td>
+                                    <td *ngIf="showDayFormat" style="text-align: center;"> <span
+                                            class="column-name">Final elo: </span> {{ log.eloEnd }}</td>
+                                    <td style="text-align: center;" *ngIf="showDayFormat && log.eloColor > 0"> <span
+                                            class="column-name">Elo: </span> <span style="color: rgb(37, 122, 37);">{{
+                                            log.elo }}</span></td>
+                                    <td style="text-align: center;" *ngIf="showDayFormat && log.eloColor < 0"> <span
+                                            class="column-name">Elo: </span> <span style="color: rgb(168, 5, 5);">{{
+                                            log.elo }}</span></td>
+                                    <td style="text-align: center;" *ngIf="!showDayFormat"> <span
+                                            class="column-name">Elo: </span> {{ log.elo }}</td>
+                                    <td style="text-align: center;"> <span class="column-name">Season: </span> {{
+                                        log.season }}</td>
                                     <td *ngIf="!showDayFormat" style="display: flex; gap: 10px;">
                                         <button class="btn btn-primary btn-sm" (click)="editBattleLog(log)"
                                             style=" background-color: rgb(63, 196, 123);">Edit</button>
@@ -130,12 +158,13 @@
                                 </tr>
                             </ng-template>
                         </p-table>
-                        <button style="margin-top: 2rem; background-color: #c366cf; max-width: 20%;" class="btn btn-secondary w-100 buttonM"
-                    (click)="showStats(showLastSeason, showDayFormat)">Show Stats</button>
+                        <button style="margin-top: 2rem; background-color: #c366cf; max-width: 20%;"
+                            class="btn btn-secondary w-100 buttonM"
+                            (click)="showStats(showLastSeason, showDayFormat)">Show Stats</button>
                     </div>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -150,8 +179,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="statsModalLabel">Battle Statistics</h5>
-                <button type="button" style="max-width: 5%; background-color: aliceblue;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="closeModal()"></button>
+                <button type="button" style="max-width: 5%; background-color: aliceblue;" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
 
@@ -164,6 +193,20 @@
                            class="form-check-input" [ngStyle]="{'border-color': checkboxColor}">
                   </div>-->
                 <p>{{infoBeingShown}}</p>
+
+                <div class="input-container">
+                    <label for="seasonInput">Show data from season:</label>
+                    <div class="input-wrapper">
+                      <input 
+                        type="number" 
+                        id="seasonInput" 
+                        [(ngModel)]="selectedSeason" 
+                        (ngModelChange)="onSeasonChange()" 
+                        class="input-with-clear" />
+                      
+                      <i class="fas fa-times-circle clear-icon" (click)="clearInput()"></i>
+                    </div>
+                  </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -198,7 +241,8 @@
                         </tr>
                         <tr>
                             <td><strong style="color: #3b4cca !important;">Current Elo</strong></td>
-                            <td><strong id="maximumElo" style="color: #3b4cca !important;">{{ currentElo }}</strong></td>
+                            <td><strong id="maximumElo" style="color: #3b4cca !important;">{{ currentElo }}</strong>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

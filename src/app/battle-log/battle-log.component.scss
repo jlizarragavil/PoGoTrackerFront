@@ -309,6 +309,89 @@ input[type="checkbox"] {
   gap: 10px;
 }
 
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-with-clear {
+  width: 100%;
+  padding: 0.75rem 2rem 0.75rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+  transition: all 0.3s ease;
+  
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #ffffff;
+  }
+}
+
+.clear-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+
+  &:hover {
+    color: #ff5c5c;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .input-with-clear {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  }
+
+  .clear-icon {
+    font-size: 16px;
+    right: 8px;
+  }
+}
+
+.custom-spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #be86bc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.custom-spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #ca26c2;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 label {
   font-size: 1rem;
   color: #444;
